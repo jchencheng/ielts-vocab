@@ -28951,7 +28951,7 @@ const defaultUnits: Unit[] = [
   },
   {
     "id": "unit-test",
-    "name": "Unit Test: 5 Words",
+    "name": "Unit Test: 3 Words",
     "words": [
       {
         "id": "test-word-1",
@@ -28976,25 +28976,9 @@ const defaultUnits: Unit[] = [
         "partOfSpeech": "n.",
         "chinese": "樱桃",
         "example": "Cherries are delicious."
-      },
-      {
-        "id": "test-word-4",
-        "english": "date",
-        "phonetic": "/deɪt/",
-        "partOfSpeech": "n.",
-        "chinese": "枣",
-        "example": "Dates are sweet."
-      },
-      {
-        "id": "test-word-5",
-        "english": "elderberry",
-        "phonetic": "/ˈeldəberi/",
-        "partOfSpeech": "n.",
-        "chinese": "接骨木浆果",
-        "example": "Elderberries are used in jams."
       }
     ],
-    "article": "I went to the fruit market and bought some apple, banana, cherry, date, and elderberry. They were all fresh and delicious. The apple was crisp, the banana was ripe, the cherry was sweet, the date was soft, and the elderberry was tart. I enjoyed eating them all."
+    "article": "I went to the fruit market and bought some apple, banana, and cherry. They were all fresh and delicious. The apple was crisp, the banana was ripe, and the cherry was sweet. I enjoyed eating them all."
   }
 ];
 
