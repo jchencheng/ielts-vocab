@@ -127,3 +127,72 @@ export const unit1Article = {
 export const unit1ArticleLegacy = {
   paragraphs: unit1Article.sections.flatMap(s => s.paragraphs)
 };
+
+// Unit 2 文章数据 - 按篇章分组，每篇包含标题和段落
+export const unit2Article = {
+  sections: [
+    {
+      title: "篇章一：Environmental Science & Marine Biology",
+      subtitle: "自然环境与海洋生物",
+      paragraphs: [
+        {
+          english: `The actual biological diversity of our planet is astonishing, particularly in submarine environments. Near the equator, ecosystems thrive, but they often suffer from human impact. At the intersection of different ocean currents, the local fauna tends to overlap. Scientists can deduce the health of these areas by studying an organic mechanism within a specific marine vertebrate, examining its intestine for toxins. A leak of chemicals from a deep-sea spring can release a harmful ion into the water.`,
+          chinese: `地球上实际的生物多样性令人惊叹，特别是在水底的环境中。在赤道附近，生态系统繁荣发展，但它们经常遭受人类活动的影响。在不同洋流的"十字路口"（交汇处），当地的动物往往会部分重叠。科学家可以通过研究特定海洋脊柱动物体内的有机机制，检查其肠道中的毒素，来推断这些地区的健康状况。深海泉水的化学物质泄露会将有害离子释放到水中。`
+        },
+        {
+          english: `Coastal erosion leaves the rocks bare and covered in silt. Researchers use a long hose to clear the debris. To survive the absolute darkness and an occasional earthquake, creatures develop a striking outward appearance, such as a leopard pattern or a slender body resembling a feather. These animals demonstrate an incredible ability to withstand their harsh surroundings. By giving the ocean a regular check-up, experts can forecast environmental changes with great precision. This is a typical example of the general range of a habitat's potential.`,
+          chinese: `海岸的腐蚀使岩石变得光秃并覆盖着淤泥。研究人员使用长软管来清理碎屑。为了在绝对的黑暗和偶尔的地震中生存，生物进化出了显著的表面外观，比如豹纹或像羽毛一样修长的身体。这些动物展示了抵挡恶劣环境的难以置信的能力。通过对海洋进行定期的检查，专家可以非常精确地预测环境变化。这是栖息地普遍潜能范围的一个典型例子。`
+        }
+      ]
+    },
+    {
+      title: "篇章二：Business, Psychology & Society",
+      subtitle: "现代商业、职场与社会",
+      paragraphs: [
+        {
+          english: `In today's commercial world, securing an internship is almost compulsory for young graduates. However, a recent survey revealed that a respondent often feels treated as a mere substitute. The pursuit of profit sometimes comes at the expense of employee well-being. This lack of clear exchange between staff and an administrator can impede progress and create disharmony.`,
+          chinese: `在当今的商业世界中，获得实习身份对年轻毕业生来说几乎是强制性的。然而，最近的一项调查显示，调查对象经常感到自己只是被当作代替者。对利润的追求有时是以牺牲员工福祉为代价的。员工与管理人员之间缺乏清晰的交流会阻碍进展并造成不和谐。`
+        },
+        {
+          english: `When colleagues disagree, it is essential to foster an inclusive environment. If workers have a reservation, a reasonable manager should address it rather than letting it escalate into a dispute or even a strike. To strengthen the team, the standard approach is not to rely exclusively on a workaholic culture. While industrious employees are valued, internal stress is a problem that should bother every leader.`,
+          chinese: `当同事们不同意（产生分歧）时，营造一个包容广阔的环境至关重要。如果员工有保留意见，合理的管理者应该解决它，而不是让它升级为争端甚至罢工。为了巩固团队，标准的做法是不应专门依赖工作狂文化。虽然勤奋的员工很有价值，但内部压力是一个应该烦扰每位领导者的问题。`
+        },
+        {
+          english: `A divisional head might manage a massive consignment in a way that runs counter to traditional convention. This unique concept often requires the company to invest in a counsellor to help staff achieve their ultimate ambition. To minimise wastage, leaders must regulate resources with careful discretion.`,
+          chinese: `部门主管可能会以一种与传统惯例相反的方式来管理一大批托运的货物。这种独一无二的概念通常需要公司投资聘请顾问，以帮助员工实现他们最终的雄心。为了使损耗降到最低，领导者必须谨慎地控制资源。`
+        },
+        {
+          english: `After a brief preparation, an ambitious committee might recruit a new representative or their overseas counterpart. If the finance department's comparative data shows losses, the CEO may need to reverse earlier decisions or ultimately resign. Consequently, sound judgment is crucial, and managers cannot remain ignorant or unaware of purely theoretical risks, ignoring voluntary feedback.`,
+          chinese: `经过简短的准备后，一个有野心的委员会可能会招募一名新代表或其海外地位相当的人。如果财政部门的比较数据显示亏损，首席执行官可能需要撤销（颠倒）早先的决定，或者最终辞职。因此，良好的判断力至关重要，管理者不能对纯理论的风险保持无知或未意识到，也不能无视自愿的反馈。`
+        }
+      ]
+    },
+    {
+      title: "篇章三：Literature, History & Daily Life",
+      subtitle: "文学、历史与日常生活",
+      paragraphs: [
+        {
+          english: `When studying the legacy of human culture, an anthropologist might read ancient literature or examine a historical transcript. Achieving a doctorate requires one to dedicate years to writing a detailed essay. Some ancient practices, like astrology, may seem like an illusion to us now, but they used to represent early attempts to understand the universe.`,
+          chinese: `在研究人类文化的遗产时，人类学家可能会阅读古代文献或检查历史文字记录。要在该领域获得博士学位，需要献身数年撰写详细的评论文。一些古老的实践，如占星学，现在对我们来说似乎是一种错觉，但它们曾经代表了人类理解宇宙的早期尝试。`
+        },
+        {
+          english: `Historically, life was far from the cosset we experience today. A humble abode lacked modern furniture or a refrigerator. To attain a comfortable life, a couple had to mould their environment using a rudimentary instrument made of brass. They didn't have a modern gadget or a light bulb to simplify their tasks. A pirate operating from a remote outpost faced even harsher conditions.`,
+          chinese: `在历史上，生活远非我们今天所体验的溺爱。简陋的住所缺乏现代家具或冰箱。为了获得舒适的生活，夫妇俩必须使用由黄铜制成的粗糙工具来塑造他们的环境。他们没有现代的小玩意或灯泡来简化任务。在偏远村落（前哨）活动的海盗面临着更加严酷的条件。`
+        },
+        {
+          english: `Today, we include many conveniences in our routines. During our leisure, we might entertain ourselves with a crossword, watch a performer on a trapeze, or take a luxurious cruise. We might tune a radio or use a medical device and a tablet to manage cardiovascular health. Everyday habits, like using a comb, needing to shave, or visiting a lavatory, are straightforward. However, packing luggage can still induce a state of muddle and irritation, especially if an emergency forces us to fold clothes quickly. To minimise stress, we must prepare suitably.`,
+          chinese: `今天，我们的日常生活中包含许多便利设施。在空闲时间，我们可能会通过玩纵横填字游戏、观看高空秋千上的表演者或参加豪华的航游来使自己娱乐。我们可能会调节收音机，或使用医疗装置和药片来管理心血管健康。日常习惯，如使用梳子、需要修面或去盥洗室，都非常简单。然而，为旅行打包行李仍然会引起一团糟和恼怒的状态，特别是如果突发事件迫使我们迅速折叠衣服。为了将压力减到最低限度，我们必须合适地进行准备。`
+        },
+        {
+          english: `Some historical ideas are ambiguous and their true meanings vanish over time. A scholar might quote a text, but if the words are not pronounceable, it creates a barrier. The notion of the atomic age didn't originate in a student dorm but through imaginative scientific mastery. Sometimes, old ideas are deemed decrepit and academics expel or exile them from modern thought, removing the gloss of the past. Yet, whether attending a lecture or watching a bird flap its wings, the incredible world never ceases to amaze, even if it strains our eyesight to take it all in.`,
+          chinese: `一些历史观念是模棱两可的，它们的真正含义随着时间突然消失。学者可能会引用一段文本，但如果这些词不可发音，就会产生障碍。原子时代的观念并非起源于学生宿舍，而是通过富有想象力的科学精通。有时，旧思想被认为是破旧的，学者们将它们从现代思想中驱逐或流放，剥去了过去的假象。然而，无论是听演讲还是观察鸟儿拍打翅膀，这个难以置信的世界永远令人惊叹，即使它使我们的视力紧张以至于难以看清一切。`
+        }
+      ]
+    }
+  ] as ArticleSection[]
+};
+
+// 为了保持向后兼容，提供paragraphs数组
+export const unit2ArticleLegacy = {
+  paragraphs: unit2Article.sections.flatMap(s => s.paragraphs)
+};

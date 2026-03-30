@@ -1,5 +1,5 @@
 import { UserData, Unit, TestResult, TestProgress } from './types';
-import { unit1Article } from './articleData';
+import { unit1Article, unit2Article } from './articleData';
 
 const STORAGE_KEY = 'ielts-pwa-data';
 
@@ -2465,7 +2465,7 @@ const defaultUnits: Unit[] = [
         "example": ""
       }
     ],
-    "article": "In the field of Cultural Exchange, researchers have been studying various phenomena to understand their implications. The concept of deduce has been widely discussed in recent studies. The concept of leak* has been widely discussed in recent studies. The concept of administrator* has been widely discussed in recent studies. The concept of invest* has been widely discussed in recent studies. The concept of submarine has been widely discussed in recent studies. The concept of consignment* has been widely discussed in recent studies. The concept of check-up* has been widely discussed in recent studies. The concept of equator has been widely discussed in recent studies. The concept of instrument has been widely discussed in recent studies. The concept of standard* has been widely discussed in recent studies. Researchers have found that these factors play a significant role in shaping our understanding of the subject. Further studies are needed to explore the full implications of these findings."
+    "article": unit2Article
   },
   {
     "id": "unit-3",
@@ -29032,6 +29032,13 @@ export const initializeData = (): UserData => {
         article: unit1Article
       };
     }
+    // 第二个单元使用unit2.md的文章内容
+    if (index === 1) {
+      return {
+        ...unit,
+        article: unit2Article
+      };
+    }
     // 其他单元使用自动生成的翻译
     if (typeof unit.article === 'string') {
       const englishText = unit.article;
@@ -29117,6 +29124,19 @@ export const getData = (): UserData => {
           if (typeof unit.article === 'string' || !isSectionsFormat) {
             needsUpdate = true;
             unit.article = unit1Article;
+          }
+          return unit;
+        }
+        // 第二个单元总是使用unit2Article
+        if (index === 1) {
+          // 检查是否需要更新（如果当前不是unit2Article的新格式，即sections格式）
+          const isSectionsFormat = typeof unit.article === 'object' && 
+                                   unit.article !== null && 
+                                   'sections' in unit.article && 
+                                   Array.isArray(unit.article.sections);
+          if (typeof unit.article === 'string' || !isSectionsFormat) {
+            needsUpdate = true;
+            unit.article = unit2Article;
           }
           return unit;
         }
