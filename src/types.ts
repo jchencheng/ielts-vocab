@@ -70,6 +70,17 @@ export interface ArticleReadingProgress {
   lastReadTime: string;
 }
 
+export interface WrongWord {
+  wordId: string;
+  english: string;
+  phonetic: string;
+  partOfSpeech: string;
+  chinese: string;
+  example: string;
+  addedAt: string;
+  errorCount: number;
+}
+
 export interface UserData {
   units: Unit[];
   testResults: TestResult[];
@@ -77,4 +88,5 @@ export interface UserData {
   currentUnitId: string;
   lastLearningProgress?: LearningProgress;  // 上次学习进度
   articleReadingProgress?: ArticleReadingProgress[];  // 文章阅读进度
+  wrongWords: WrongWord[];  // 错题本
 }

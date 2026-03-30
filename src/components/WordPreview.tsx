@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getData, saveWordTooEasyStatus } from '../dataService';
+import { getData, saveWordTooEasyStatus, addToWrongWords, removeFromWrongWords, isWordInWrongWords } from '../dataService';
 import { Word } from '../types';
 
 interface WordPreviewProps {
@@ -11,6 +11,7 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [unitName, setUnitName] = useState('');
   const [easyWordIds, setEasyWordIds] = useState<Set<string>>(new Set());
+  const [wrongWordIds, setWrongWordIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const data = getData();
@@ -21,6 +22,9 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
       // 加载已标记为太简单的单词
       const easyIds = new Set(unit.words.filter(w => w.isTooEasy).map(w => w.id));
       setEasyWordIds(easyIds);
+      // 加载错题本中的单词
+      const wrongIds = new Set(unit.words.filter(w => isWordInWrongWords(w.id)).map(w => w.id));
+      setWrongWordIds(wrongIds);
     }
   }, [unitId]);
 
@@ -47,6 +51,23 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
           : word
       )
     );
+  };
+
+  const handleToggleWrongWord = (word: Word) => {
+    const newWrongWordIds = new Set(wrongWordIds);
+    const isCurrentlyWrong = wrongWordIds.has(word.id);
+    
+    if (isCurrentlyWrong) {
+      newWrongWordIds.delete(word.id);
+      // 从错题本中移除
+      removeFromWrongWords(word.id);
+    } else {
+      newWrongWordIds.add(word.id);
+      // 添加到错题本
+      addToWrongWords(word);
+    }
+    
+    setWrongWordIds(newWrongWordIds);
   };
 
   const easyWordsCount = easyWordIds.size;
@@ -89,6 +110,7 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
         </div>
         {words.map((word) => {
           const isTooEasy = easyWordIds.has(word.id);
+          const isWrongWord = wrongWordIds.has(word.id);
           return (
             <div 
               key={word.id} 
@@ -109,16 +131,28 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
               <div className="word-chinese" style={{ width: '50%' }}>
                 {word.chinese}
               </div>
-              <div style={{ width: '20%', textAlign: 'center' }}>
+              <div style={{ width: '20%', textAlign: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <button
                   className={`btn btn-sm ${isTooEasy ? 'btn-secondary' : 'btn-primary'}`}
                   onClick={() => handleToggleTooEasy(word.id)}
                   style={{ 
                     padding: '0.25rem 0.5rem',
-                    fontSize: '0.75rem'
+                    fontSize: '0.75rem',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   {isTooEasy ? '取消标记' : '太简单'}
+                </button>
+                <button
+                  className={`btn btn-sm ${isWrongWord ? 'btn-danger' : 'btn-warning'}`}
+                  onClick={() => handleToggleWrongWord(word)}
+                  style={{ 
+                    padding: '0.25rem 0.5rem',
+                    fontSize: '0.75rem',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {isWrongWord ? '移出错题' : '加入错题'}
                 </button>
               </div>
             </div>

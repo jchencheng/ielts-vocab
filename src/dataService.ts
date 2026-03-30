@@ -29042,7 +29042,8 @@ export const initializeData = (): UserData => {
     units: processedUnits,
     testResults: [],
     testProgress: [],
-    currentUnitId: 'unit-1'
+    currentUnitId: 'unit-1',
+    wrongWords: []
   };
   
   saveData(initialData);
@@ -29097,6 +29098,13 @@ export const getData = (): UserData => {
       const parsedData = JSON.parse(storedData);
       // 兼容处理：将字符串格式的article转换为Article对象格式
       let needsUpdate = false;
+      
+      // 兼容处理：确保wrongWords属性存在
+      if (!parsedData.wrongWords) {
+        parsedData.wrongWords = [];
+        needsUpdate = true;
+      }
+      
       parsedData.units = parsedData.units.map((unit: any, index: number) => {
         // 第一个单元总是使用unit1Article
         if (index === 0) {
@@ -29393,4 +29401,57 @@ export const getOverallProgress = () => {
       ? ((studiedWords + readParagraphs + completedTests) / (totalWords + totalParagraphs + totalUnits)) * 100 
       : 0
   };
+};
+
+// 添加单词到错题本
+export const addToWrongWords = (word: { id: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string }): void => {
+  const data = getData();
+  
+  // 检查单词是否已经在错题本中
+  const existingIndex = data.wrongWords.findIndex(w => w.wordId === word.id);
+  
+  if (existingIndex >= 0) {
+    // 如果单词已存在，增加错误次数
+    data.wrongWords[existingIndex].errorCount += 1;
+  } else {
+    // 如果单词不存在，添加到错题本
+    data.wrongWords.push({
+      wordId: word.id,
+      english: word.english,
+      phonetic: word.phonetic,
+      partOfSpeech: word.partOfSpeech,
+      chinese: word.chinese,
+      example: word.example,
+      addedAt: new Date().toISOString(),
+      errorCount: 1
+    });
+  }
+  
+  saveData(data);
+};
+
+// 从错题本中移除单词
+export const removeFromWrongWords = (wordId: string): void => {
+  const data = getData();
+  data.wrongWords = data.wrongWords.filter(w => w.wordId !== wordId);
+  saveData(data);
+};
+
+// 获取错题本列表
+export const getWrongWords = (): { wordId: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string; addedAt: string; errorCount: number }[] => {
+  const data = getData();
+  return data.wrongWords;
+};
+
+// 检查单词是否在错题本中
+export const isWordInWrongWords = (wordId: string): boolean => {
+  const data = getData();
+  return data.wrongWords.some(w => w.wordId === wordId);
+};
+
+// 清空错题本
+export const clearWrongWords = (): void => {
+  const data = getData();
+  data.wrongWords = [];
+  saveData(data);
 };

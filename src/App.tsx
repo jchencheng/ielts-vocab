@@ -5,6 +5,8 @@ import WordPreview from './components/WordPreview'
 import ArticleReader from './components/ArticleReader'
 import Test from './components/Test'
 import Stats from './components/Stats'
+import WrongWords from './components/WrongWords'
+import WrongWordsTest from './components/WrongWordsTest'
 import { LearningProgress } from './types'
 
 interface OverallProgress {
@@ -27,6 +29,8 @@ function App() {
   const [hasSelectedUnit, setHasSelectedUnit] = useState(false)
   const [lastProgress, setLastProgress] = useState<LearningProgress | null>(null)
   const [overallProgress, setOverallProgress] = useState<OverallProgress | null>(null)
+  const [showWrongWords, setShowWrongWords] = useState(false)
+  const [showWrongWordsTest, setShowWrongWordsTest] = useState(false)
 
   useEffect(() => {
     const data = getData()
@@ -93,6 +97,124 @@ function App() {
 
   // 单元选择页面
   if (!hasSelectedUnit) {
+    // 如果用户点击了错题本按钮，显示错题本页面
+    if (showWrongWords) {
+      return (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+          {/* Header */}
+          <header className="navbar">
+            <div className="navbar-container">
+              <a href="#" className="navbar-logo">IELTS 单词记忆</a>
+              <div className="top-nav-actions">
+                <button
+                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+                  onClick={() => {
+                    setShowWrongWords(true)
+                    setShowWrongWordsTest(false)
+                  }}
+                >
+                  错题本
+                </button>
+                <button
+                  className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveTab('settings')
+                    setShowWrongWords(false)
+                    setShowWrongWordsTest(false)
+                  }}
+                >
+                  设置
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Wrong Words Page */}
+          <div className="page-container">
+            <div className="content-card">
+              <WrongWords 
+                onSwitchUnit={() => {
+                  setShowWrongWords(false)
+                  setShowWrongWordsTest(false)
+                  setActiveTab('preview')
+                }} 
+                onStartTest={() => {
+                  setShowWrongWords(false)
+                  setShowWrongWordsTest(true)
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
+            <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+              <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
+            </div>
+          </footer>
+        </div>
+      )
+    }
+
+    // 如果用户点击了错题本测试按钮，显示错题本测试页面
+    if (showWrongWordsTest) {
+      return (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+          {/* Header */}
+          <header className="navbar">
+            <div className="navbar-container">
+              <a href="#" className="navbar-logo">IELTS 单词记忆</a>
+              <div className="top-nav-actions">
+                <button
+                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+                  onClick={() => {
+                    setShowWrongWords(true)
+                    setShowWrongWordsTest(false)
+                  }}
+                >
+                  错题本
+                </button>
+                <button
+                  className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveTab('settings')
+                    setShowWrongWords(false)
+                    setShowWrongWordsTest(false)
+                  }}
+                >
+                  设置
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Wrong Words Test Page */}
+          <div className="page-container">
+            <div className="content-card">
+              <WrongWordsTest 
+                onSwitchUnit={() => {
+                  setShowWrongWords(false)
+                  setShowWrongWordsTest(false)
+                  setActiveTab('preview')
+                }} 
+                onBackToWrongWords={() => {
+                  setShowWrongWordsTest(false)
+                  setShowWrongWords(true)
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
+            <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+              <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
+            </div>
+          </footer>
+        </div>
+      )
+    }
+
     // 如果用户点击了设置按钮，显示设置页面
     if (activeTab === 'settings') {
       return (
@@ -103,8 +225,21 @@ function App() {
               <a href="#" className="navbar-logo">IELTS 单词记忆</a>
               <div className="top-nav-actions">
                 <button
+                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+                  onClick={() => {
+                    setShowWrongWords(true)
+                    setShowWrongWordsTest(false)
+                  }}
+                >
+                  错题本
+                </button>
+                <button
                   className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('settings')}
+                  onClick={() => {
+                    setActiveTab('settings')
+                    setShowWrongWords(false)
+                    setShowWrongWordsTest(false)
+                  }}
                 >
                   设置
                 </button>
@@ -118,7 +253,11 @@ function App() {
               <div className="flex items-center gap-4 mb-6">
                 <button 
                   className="btn btn-secondary"
-                  onClick={() => setActiveTab('preview')}
+                  onClick={() => {
+                    setActiveTab('preview')
+                    setShowWrongWords(false)
+                    setShowWrongWordsTest(false)
+                  }}
                 >
                   返回
                 </button>
@@ -167,6 +306,15 @@ function App() {
           <div className="navbar-container">
             <a href="#" className="navbar-logo">IELTS 单词记忆</a>
             <div className="top-nav-actions">
+              <button
+                className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+                onClick={() => {
+                  setShowWrongWords(true)
+                  setShowWrongWordsTest(false)
+                }}
+              >
+                错题本
+              </button>
               <button
                 className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
                 onClick={() => setActiveTab('settings')}
@@ -330,8 +478,21 @@ function App() {
           <a href="#" className="navbar-logo" onClick={handleBackToUnits}>IELTS 单词记忆</a>
           <div className="top-nav-actions">
             <button
+              className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+              onClick={() => {
+                setShowWrongWords(true)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              错题本
+            </button>
+            <button
               className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => setActiveTab('settings')}
+              onClick={() => {
+                setActiveTab('settings')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               设置
             </button>
@@ -345,25 +506,41 @@ function App() {
           <div className="main-nav-links">
             <button
               className={`navbar-link ${activeTab === 'preview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('preview')}
+              onClick={() => {
+                setActiveTab('preview')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               预习
             </button>
             <button
               className={`navbar-link ${activeTab === 'article' ? 'active' : ''}`}
-              onClick={() => setActiveTab('article')}
+              onClick={() => {
+                setActiveTab('article')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               学习
             </button>
             <button
               className={`navbar-link ${activeTab === 'test' ? 'active' : ''}`}
-              onClick={() => setActiveTab('test')}
+              onClick={() => {
+                setActiveTab('test')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               测试
             </button>
             <button
               className={`navbar-link ${activeTab === 'stats' ? 'active' : ''}`}
-              onClick={() => setActiveTab('stats')}
+              onClick={() => {
+                setActiveTab('stats')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               统计
             </button>
@@ -377,31 +554,60 @@ function App() {
           <div className="mobile-nav-links">
             <button
               className={`navbar-link ${activeTab === 'preview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('preview')}
+              onClick={() => {
+                setActiveTab('preview')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               预习
             </button>
             <button
               className={`navbar-link ${activeTab === 'article' ? 'active' : ''}`}
-              onClick={() => setActiveTab('article')}
+              onClick={() => {
+                setActiveTab('article')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               学习
             </button>
             <button
               className={`navbar-link ${activeTab === 'test' ? 'active' : ''}`}
-              onClick={() => setActiveTab('test')}
+              onClick={() => {
+                setActiveTab('test')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               测试
             </button>
             <button
               className={`navbar-link ${activeTab === 'stats' ? 'active' : ''}`}
-              onClick={() => setActiveTab('stats')}
+              onClick={() => {
+                setActiveTab('stats')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               统计
             </button>
             <button
+              className={`navbar-link ${showWrongWords ? 'active' : ''}`}
+              onClick={() => {
+                setShowWrongWords(true)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              错题本
+            </button>
+            <button
               className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => setActiveTab('settings')}
+              onClick={() => {
+                setActiveTab('settings')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
             >
               设置
             </button>
@@ -412,18 +618,50 @@ function App() {
       {/* Main Content */}
       <div className="page-container">
         <div className="content-card">
-          {activeTab === 'preview' && <WordPreview unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />}
-          {activeTab === 'article' && <ArticleReader unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />}
-          {activeTab === 'test' && <Test unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />}
-          {activeTab === 'stats' && <Stats unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />}
-          {activeTab === 'settings' && (
+          {showWrongWordsTest ? (
+            <WrongWordsTest 
+              onSwitchUnit={() => {
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+                setActiveTab('preview')
+              }} 
+              onBackToWrongWords={() => {
+                setShowWrongWordsTest(false)
+                setShowWrongWords(true)
+              }}
+            />
+          ) : showWrongWords ? (
+            <WrongWords 
+              onSwitchUnit={() => {
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+                setActiveTab('preview')
+              }} 
+              onStartTest={() => {
+                setShowWrongWords(false)
+                setShowWrongWordsTest(true)
+              }}
+            />
+          ) : activeTab === 'preview' ? (
+            <WordPreview unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+          ) : activeTab === 'article' ? (
+            <ArticleReader unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+          ) : activeTab === 'test' ? (
+            <Test unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+          ) : activeTab === 'stats' ? (
+            <Stats unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+          ) : activeTab === 'settings' ? (
             <div>
               <div className="flex items-center gap-4 mb-6">
                 <button 
                   className="btn btn-secondary"
-                  onClick={handleBackToUnits}
+                  onClick={() => {
+                    setActiveTab('preview')
+                    setShowWrongWords(false)
+                    setShowWrongWordsTest(false)
+                  }}
                 >
-                  切换单元
+                  返回
                 </button>
                 <h2 className="text-2xl font-bold">设置</h2>
               </div>
@@ -450,7 +688,7 @@ function App() {
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
 
