@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getData, saveTestResult, saveTestProgress, getTestProgress, clearTestProgress, getStudyWords, addToWrongWords } from '../dataService';
+import { getData, saveTestResult, saveTestProgress, getTestProgress, clearTestProgress, getStudyWords, addToWrongWords, getWrongWords, removeFromWrongWords } from '../dataService';
 import { Word, TestProgress } from '../types';
 
 interface TestProps {
@@ -159,6 +159,8 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
     const newScore = correct ? score + 1 : score;
     if (correct) {
       setScore(newScore);
+      // 回答正确，将单词从错题本中移除
+      removeFromWrongWords(currentWord.id);
     } else {
       // 回答错误，将单词加入错题本
       addToWrongWords(currentWord);
@@ -186,6 +188,38 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
     resetTest();
   };
 
+  const handleRetryWrongWords = () => {
+    // 获取当前单元的错题
+    const allWrongWords = getWrongWords();
+    const unitWrongWords = allWrongWords.filter(word => {
+      // 从wordId中提取单元信息，假设wordId格式为word-{unitNumber}-{wordNumber}
+      const unitIdMatch = word.wordId.match(/word-(\d+)-\d+/);
+      if (unitIdMatch) {
+        const unitNumber = parseInt(unitIdMatch[1]);
+        return unitId === `unit-${unitNumber}`;
+      }
+      return false;
+    });
+
+    if (unitWrongWords.length > 0) {
+      // 转换错题格式为Word格式
+      const wrongWordsAsWord: Word[] = unitWrongWords.map(wrongWord => ({
+        id: wrongWord.wordId,
+        english: wrongWord.english,
+        phonetic: wrongWord.phonetic,
+        partOfSpeech: wrongWord.partOfSpeech,
+        chinese: wrongWord.chinese,
+        example: wrongWord.example
+      }));
+
+      // 设置为错题测试模式
+      setWords(wrongWordsAsWord);
+      resetTest();
+    } else {
+      alert('此单元没有错题！');
+    }
+  };
+
   const handleContinue = () => {
     setHasSavedProgress(false);
   };
@@ -204,7 +238,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
               className="btn btn-secondary"
               onClick={onSwitchUnit}
             >
-              切换单元
+              返回
             </button>
           )}
           <h2 className="text-2xl font-bold font-serif">{unitName}</h2>
@@ -213,12 +247,20 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
           <h3 className="text-3xl font-bold mb-4">测试完成！</h3>
           <p className="text-xl mb-2">你的得分：{finalScore} / {words.length}</p>
           <p className="text-gray-600 mb-6">正确率：{(finalScore / words.length * 100).toFixed(0)}%</p>
-          <button 
-            className="btn btn-primary"
-            onClick={handleRestart}
-          >
-            重新测试
-          </button>
+          <div className="space-y-4">
+            <button 
+              className="btn btn-primary w-full"
+              onClick={handleRestart}
+            >
+              重新测试
+            </button>
+            <button 
+              className="btn btn-secondary w-full"
+              onClick={handleRetryWrongWords}
+            >
+              重做此单元错题
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -234,7 +276,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
               className="btn btn-secondary"
               onClick={onSwitchUnit}
             >
-              切换单元
+              返回
             </button>
           )}
           <h2 className="text-2xl font-bold font-serif">{unitName}</h2>

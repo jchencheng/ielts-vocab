@@ -1,5 +1,5 @@
 import { UserData, Unit, TestResult, TestProgress } from './types';
-import { unit1Article, unit2Article } from './articleData';
+import { unit1Article, unit2Article, unit3Article } from './articleData';
 
 const STORAGE_KEY = 'ielts-pwa-data';
 
@@ -28979,6 +28979,29 @@ const defaultUnits: Unit[] = [
       }
     ],
     "article": "I went to the fruit market and bought some apple, banana, and cherry. They were all fresh and delicious. The apple was crisp, the banana was ripe, and the cherry was sweet. I enjoyed eating them all."
+  },
+  {
+    "id": "test-unit",
+    "name": "Test Unit",
+    "words": [
+      {
+        "id": "word-1-15",
+        "english": "electronic*",
+        "phonetic": "[‚ɪlek'trɒnɪk]",
+        "partOfSpeech": "a.",
+        "chinese": "电子的",
+        "example": ""
+      },
+      {
+        "id": "word-2-36",
+        "english": "cooperation*",
+        "phonetic": "/kəuˏɔpəˈreɪʃn/",
+        "partOfSpeech": "n.",
+        "chinese": "合作，协作；配合",
+        "example": ""
+      }
+    ],
+    "article": "This is a test unit with only two words from Unit 1 for testing purposes."
   }
 ];
 
@@ -29021,6 +29044,13 @@ export const initializeData = (): UserData => {
       return {
         ...unit,
         article: unit2Article
+      };
+    }
+    // 第三个单元使用unit3.md的文章内容
+    if (index === 2) {
+      return {
+        ...unit,
+        article: unit3Article
       };
     }
     // 其他单元使用自动生成的翻译
@@ -29129,6 +29159,19 @@ export const getData = (): UserData => {
           if (typeof unit.article === 'string' || !isSectionsFormat) {
             needsUpdate = true;
             unit.article = unit2Article;
+          }
+          return unit;
+        }
+        // 第三个单元总是使用unit3Article
+        if (index === 2) {
+          // 检查是否需要更新（如果当前不是unit3Article的新格式，即sections格式）
+          const isSectionsFormat = typeof unit.article === 'object' && 
+                                   unit.article !== null && 
+                                   'sections' in unit.article && 
+                                   Array.isArray(unit.article.sections);
+          if (typeof unit.article === 'string' || !isSectionsFormat) {
+            needsUpdate = true;
+            unit.article = unit3Article;
           }
           return unit;
         }

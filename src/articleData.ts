@@ -196,3 +196,56 @@ export const unit2Article = {
 export const unit2ArticleLegacy = {
   paragraphs: unit2Article.sections.flatMap(s => s.paragraphs)
 };
+
+// Unit 3 文章数据 - 按篇章分组，每篇包含标题和段落
+export const unit3Article = {
+  sections: [
+    {
+      title: "篇章一：Urban Development and Administrative Strategy",
+      subtitle: "城市发展与行政策略",
+      paragraphs: [
+        {
+          english: `In the modern urban landscape, the quality of infrastructure is a major concern for any administration. To enhance the city's property, a shrewd coordinator must allocate funds with a specific objective. Sometimes, this involves a bid process where a shareholder might propose to demolish a decrepit turret to make room for a durable luxury complex. Such a purchase is not necessarily a privilege for the rich, but an execution of an annual plan to remove a vacant slum.`,
+          chinese: `在现代都市景观中，基础设施的质量是任何管理部门的主要关注点。为了增强城市的房产价值，一位精明的协调者必须针对特定目标分配资金。有时，这涉及到投标过程，股东可能会提议拆除一个破旧的角楼，为耐用的豪华建筑群腾出空间。这样的购买未必是富人的特权，而是执行一项旨在清除空置贫民区的年度计划。`
+        },
+        {
+          english: `However, the distribution of resources often leads to conflict. A tenant might oppose the transfer of their heritage to a former independent zone. They may underline that the constant circulation of statistics does not depict their actual suffering. If a defect in the plan is found, the execution must interrupt. A specialist is then required to calculate the approximate improvement. To activate the project again, a license must be issued to entitle the cooperative team to repaint the shutter and fix the infrastructure.`,
+          chinese: `然而，资源的分配经常导致冲突。承租人可能会反对将他们的遗产转移到以前的独立区域。他们可能会强调，统计数字的持续流传并不能描绘他们实际的痛苦。如果发现计划中的缺陷，实施必须中断。随后需要一名专家来计算大约的改进。为了再次激活项目，必须颁发许可证，以赋予合作团队重新粉刷百叶窗并修复基础设施的权利。`
+        }
+      ]
+    },
+    {
+      title: "篇章二：Natural Ecosystems and Scientific Discovery",
+      subtitle: "自然生态系统与科学研究",
+      paragraphs: [
+        {
+          english: `The ecosystem of a coastal delta is a stable but fragile environment. Within a certain radius, migratory birds alight on the alluvial soil to nourish their young. Scientists discover that the nutrition of these birds depends on a sequence of biological events. For instance, the dormancy of certain plants ends when the atmospheric moisture begins to evaporate. However, widespread pollution can corrode the inlet，creating a hazard for the fauna.`,
+          chinese: `沿海三角洲的生态系统是一个稳定但脆弱的环境。在一定的半径范围内，迁徙的鸟类落在冲积土上抚育幼鸟。科学家发现这些鸟类的营养取决于一系列生物事件。例如，当大气水分开始蒸发时，某些植物的休眠就会结束。然而，分布广泛的污染会腐蚀水湾，为动物群创造危险。`
+        },
+        {
+          english: `In the desert，researchers grope through the shade of ancient rocks to find a fossil. They distill data to conclude the fate of species that could not cope with climate change. To concentrate on a particular discovery, they use a lens to examine the latent crack in a durable stone. They calculate the soluble property of minerals, hoping to find an antidote to environmental decay. The discovery of exotic species often brings a compliment from the scientific community, as it provides a tangible demonstration of how life expands even in awful conditions.`,
+          chinese: `在沙漠中，研究人员在古老岩石的阴影中摸索，寻找化石。他们提取数据以推断出那些无法应付气候变化的物种的命运。为了专注于特定的发现，他们使用透镜检查耐用石头中潜伏的裂缝。他们计算矿物质的可溶性质，希望能找到环境衰退的矫正方法。奇异物种的发现经常赢得科学界的赞美，因为它有形地论证了生命甚至在糟糕的条件下是如何扩张的。`
+        }
+      ]
+    },
+    {
+      title: "篇章三：Ethics, Society, and Daily Life",
+      subtitle: "伦理、社会与日常生活",
+      paragraphs: [
+        {
+          english: `In a psychiatric clinic, a specialist might prescribe medication to help a patient cope with latent stress. The headmaster of a local school is often a coordinator for ethical education, ensuring that no student becomes a truant. For an intern, gaining a qualification is the ultimate destiny. They must work hard to bolster their literacy and avoid any scandal that could mishandle their future. To wean someone off an addiction to alcohol is a difficult task, requiring the suppression of harmful desires.`,
+          chinese: `在精神病诊所，专科医生可能会开出药物来帮助病人应付潜在的压力。当地学校的校长通常是道德教育的协调者，确保没有学生逃学。对于一名实习生来说，获得资格是最终的命运。他们必须努力工作以增强他们的文化修养，并避免任何可能误导（错误处理）他们前途的丑闻。让某人戒掉酒瘾是一项艰巨的任务，需要抑制有害的欲望。`
+        },
+        {
+          english: `Life is full of mechanical tasks; we use a pulley or a lever to move heavy objects, and we check the windscreen of a car before a long journey. During a campfire, people share souvenirs and crisp, enjoying a decent leisure time. However, a trap always exists for the ignorant. One must be shrewd to discover a scandal or an explosive situation. It is excusable to feel guilty or have a sore heart when a redundant subscription is mishandled. Ultimately, whether we are a naked immigrant or a headmaster, our heritage and honour are virtually what define us.`,
+          chinese: `生活充满了机械任务；我们使用滑轮或杠杆来移动重物，在长途旅行前我们会检查汽车的挡风玻璃。在营火旁，人们分享纪念品和薯片，享受像样的悠闲时光。然而，对于无知的人来说，陷阱总是存在的。一个人必须机灵才能发觉丑闻或令人冲动的局面。当一份多余的订阅被胡乱操作时，感到内疚或心痛是可原谅的。最终，无论我们是赤手空拳（无遮蔽）的移民还是校长，我们的传统和光荣实际上才是定义我们的东西。`
+        }
+      ]
+    }
+  ] as ArticleSection[]
+};
+
+// 为了保持向后兼容，提供paragraphs数组
+export const unit3ArticleLegacy = {
+  paragraphs: unit3Article.sections.flatMap(s => s.paragraphs)
+};
