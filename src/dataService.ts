@@ -977,7 +977,8 @@ const defaultUnits: Unit[] = [
         "chinese": "雹, 冰雹 v. 赞扬; 招呼; 下雹",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 1: Chapter-1 自然地理 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-2",
@@ -1943,7 +1944,8 @@ const defaultUnits: Unit[] = [
         "chinese": "石油",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 1: Chapter-1 自然地理 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-3",
@@ -2989,7 +2991,8 @@ const defaultUnits: Unit[] = [
         "chinese": "最优的; 最佳的; 最理想的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 2: Chapter-2 植物研究. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-4",
@@ -3667,7 +3670,8 @@ const defaultUnits: Unit[] = [
         "chinese": "牛",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 3: Chapter-3 动物保护 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-5",
@@ -4345,7 +4349,8 @@ const defaultUnits: Unit[] = [
         "chinese": "牧羊人, 羊倌; 牧师",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 3: Chapter-3 动物保护 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-6",
@@ -4951,7 +4956,8 @@ const defaultUnits: Unit[] = [
         "chinese": "无望的; 极差的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 4: Chapter-4 太空探索. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-7",
@@ -6029,7 +6035,8 @@ const defaultUnits: Unit[] = [
         "chinese": "小册子; 手册",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 5: Chapter-5 学校教育 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-8",
@@ -7107,7 +7114,8 @@ const defaultUnits: Unit[] = [
         "chinese": "截止日期",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 5: Chapter-5 学校教育 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-9",
@@ -8177,7 +8185,8 @@ const defaultUnits: Unit[] = [
         "chinese": "酬金; 费用",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 5: Chapter-5 学校教育 - Part 3. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-10",
@@ -9159,7 +9168,8 @@ const defaultUnits: Unit[] = [
         "chinese": "情况; 环境; 条件",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 6: Chapter-6 科技发明. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-11",
@@ -9797,7 +9807,8 @@ const defaultUnits: Unit[] = [
         "chinese": "逆境",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 7: Chapter-7 文化历史. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-12",
@@ -10347,7 +10358,8 @@ const defaultUnits: Unit[] = [
         "chinese": "争论, 争辩; 观点",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 8: Chapter-8 语言演化. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-13",
@@ -11057,7 +11069,8 @@ const defaultUnits: Unit[] = [
         "chinese": "大提琴",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 9: Chapter-9 娱乐运动 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-14",
@@ -11767,7 +11780,8 @@ const defaultUnits: Unit[] = [
         "chinese": "v. 鞠躬",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 9: Chapter-9 娱乐运动 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-15",
@@ -12381,7 +12395,8 @@ const defaultUnits: Unit[] = [
         "chinese": "部分; 章; 节",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 10: Chapter-10 物品材料 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-16",
@@ -12995,7 +13010,8 @@ const defaultUnits: Unit[] = [
         "chinese": "耐用的; 持久的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 10: Chapter-10 物品材料 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-17",
@@ -13905,7 +13921,8 @@ const defaultUnits: Unit[] = [
         "chinese": "纤细的; 轻微的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 11: Chapter-11 时尚潮流. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-18",
@@ -14599,7 +14616,8 @@ const defaultUnits: Unit[] = [
         "chinese": "橙子",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 12: Chapter-12 饮食健康 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-19",
@@ -15293,7 +15311,8 @@ const defaultUnits: Unit[] = [
         "chinese": "切, 划, 将…切成薄片 n. (切下的食物的)薄片",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 12: Chapter-12 饮食健康 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-20",
@@ -16371,7 +16390,8 @@ const defaultUnits: Unit[] = [
         "chinese": "内部的; 自身的; 国内的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 13: Chapter-13 建筑场所. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-21",
@@ -17449,7 +17469,8 @@ const defaultUnits: Unit[] = [
         "chinese": "迅速的; 敏捷的",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 14: Chapter-14 交通旅行. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-22",
@@ -18647,7 +18668,8 @@ const defaultUnits: Unit[] = [
         "chinese": "德国",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 15: Chapter-15 国家政府. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-23",
@@ -19341,7 +19363,8 @@ const defaultUnits: Unit[] = [
         "chinese": "批发",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 16: Chapter-16 社会经济 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-24",
@@ -20027,7 +20050,8 @@ const defaultUnits: Unit[] = [
         "chinese": "合作",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 16: Chapter-16 社会经济 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-25",
@@ -20969,7 +20993,8 @@ const defaultUnits: Unit[] = [
         "chinese": "指导, 讲授; 通知; 命令",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 17: Chapter-17 法律法规. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-26",
@@ -21831,7 +21856,8 @@ const defaultUnits: Unit[] = [
         "chinese": "竞争; 参加(比赛)",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 18: Chapter-18 沙场争锋 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-27",
@@ -22685,7 +22711,8 @@ const defaultUnits: Unit[] = [
         "chinese": "老兵; 老手",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 18: Chapter-18 沙场争锋 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-28",
@@ -23659,7 +23686,8 @@ const defaultUnits: Unit[] = [
         "chinese": "懦夫, 胆小鬼",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 19: Chapter-19 社会角色. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-29",
@@ -24737,7 +24765,8 @@ const defaultUnits: Unit[] = [
         "chinese": "插话; 干扰; 干涉",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 20: Chapter-20 行为动作 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-30",
@@ -25815,7 +25844,8 @@ const defaultUnits: Unit[] = [
         "chinese": "向一侧",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 20: Chapter-20 行为动作 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-31",
@@ -26933,7 +26963,8 @@ const defaultUnits: Unit[] = [
         "chinese": "肿块; 块 v. 使成块状",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 21: Chapter-21 身心健康 - Part 1. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-32",
@@ -28051,7 +28082,8 @@ const defaultUnits: Unit[] = [
         "chinese": "道歉; 辩解",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 21: Chapter-21 身心健康 - Part 2. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-33",
@@ -29169,7 +29201,8 @@ const defaultUnits: Unit[] = [
         "chinese": "老一套, 模式化观念, 刻板印象",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 21: Chapter-21 身心健康 - Part 3. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-34",
@@ -29591,7 +29624,8 @@ const defaultUnits: Unit[] = [
         "chinese": "偶然地; 顺便提一句",
         "example": ""
       }
-    ]
+    ],
+    "article": "This is Unit 22: Chapter-22 时间日期. Please read the article and learn the vocabulary."
   },
   {
     "id": "unit-test",
