@@ -5,9 +5,10 @@ import { Word, TestProgress } from '../types';
 interface TestProps {
   unitId: string;
   onSwitchUnit?: () => void;
+  onTestComplete?: () => void;
 }
 
-const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
+const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
@@ -141,6 +142,9 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
           saveTestResult(unitId, score, words.length);
           clearTestProgress(unitId);
           setShowResult(true);
+          if (onTestComplete) {
+            onTestComplete();
+          }
         }
       }, 1500);
     }
@@ -180,6 +184,9 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit }) => {
         saveTestResult(unitId, newScore, words.length);
         clearTestProgress(unitId);
         setShowResult(true);
+        if (onTestComplete) {
+          onTestComplete();
+        }
       }
     }, 1500);
   };

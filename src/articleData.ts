@@ -10,113 +10,50 @@ export interface ArticleSection {
   paragraphs: ArticleParagraph[];
 }
 
+// Unit 1 - Chapter-1 自然地理 - Part 1
 export const unit1Article = {
   sections: [
     {
-      title: "篇章一：History, Monarchy & Cultural Legacy",
-      subtitle: "历史、王权与文化遗产",
+      title: "Theme 1: The Earth's Structure and Geological Foundations",
+      subtitle: "地球的结构与地质基础",
       paragraphs: [
         {
-          english: `The history of human civilization is deeply shaped by the rule of the emperor and the power of the royal family, where a regent would often take the throne during a monarch's minority, upholding traditional systems of governance that have lasted for centuries. Many ancient dynasties, once prosperous and powerful, left behind magnificent palaces topped with a golden crown emblem, grand ceremony halls, and philosophical texts that still guide modern thought. The philosophy of these ancient societies often centered on the pursuit of eternal peace and harmony, with strict social hierarchy that defined every person's role in the community.`,
-          chinese: `人类文明的历史，深受皇帝的统治与王室权力的深刻塑造，在君主年幼时，摄政者往往会执掌王权，维护延续了数百年的传统治理体系。许多曾经繁荣强盛的古老王朝，留下了顶部饰有金色王冠徽章的宏伟宫殿、庄严肃穆的典礼大厅，以及至今仍在指引现代思想的哲学典籍。这些古代社会的哲学，往往以追求永恒的和平与和谐为核心，辅以严格的社会等级制度，界定了社群中每个人的角色。`
-        },
-        {
-          english: `Archaeologists today continue to excavate ancient sites across the globe, working to preserve fragile relics that would otherwise be lost to time. Their effort to uncover the past has revealed that even the most powerful empires were not immune to decline, often due to a lack of effective governance or external invasion. Nevertheless these ruins remain a testament to human ingenuity, and experts argue that protecting these sites is critical to understanding our collective history. Many nations now hold special events to celebrate their cultural heritage, with inspiring exhibitions that bring ancient history to life for modern audiences.`,
-          chinese: `如今，全球的考古学家仍在不断挖掘古代遗址，致力于保护那些随时光流逝濒临消亡的脆弱文物。他们揭开历史面纱的努力向我们揭示，即便是最强大的帝国，也难逃衰落的命运，其原因往往是有效治理的缺失，或是外来的入侵。然而，这些遗址始终是人类创造力的见证，专家们主张，保护这些遗址对于理解我们的集体历史至关重要。如今，许多国家都会举办特别活动颂扬并庆祝自身的文化遗产，通过鼓舞人心的展览，为现代观众鲜活地再现古代历史。`
+          english: `Our planet is a complex system comprising the atmosphere, the water-rich hydrosphere, and the solid lithosphere. Deep beneath the surface lies the dense core, surrounded by the semi-liquid mantle, which is encased by the rigid crust. The air we breathe contains vital oxygen, while various chemical reactions produce hydrogen, every kind of oxide, and greenhouse gases like carbon dioxide. The geological makeup is fascinating. From a tiny pebble to vast reserves of precious ore, the earth is rich in every mineral. Rocks vary greatly, including metamorphic marble, crystalline quartz, and hard granite. Certain minerals even act as a natural magnet. However, the earth is restless. Under extreme thermodynamic pressure, a volcano may violently erupt, releasing molten magma. Similarly, shifting plates cause an earthquake, generating immense seismic waves.`,
+          chinese: `我们的星球是一个复杂的系统，由大气层、富含水的水圈和坚固的岩石圈组成。在地表深处是致密的地核，周围环绕着半流体的地幔，而包裹地幔的则是坚硬的地壳。我们呼吸的空气含有至关重要的氧气，同时各种化学反应会产生氢气、各种氧化物以及如二氧化碳等温室气体。这里的地质构成令人着迷。从微小的鹅卵石到大量珍贵的矿石储量，地球富含各种矿物质。岩石的种类差异很大，包括变质的大理石、结晶的石英和坚硬的花岗岩。某些矿物甚至具有天然磁铁的作用。然而，地球也是躁动不安的。在极端的极大热力学压力下，火山可能会剧烈喷发，释放出熔化的岩浆。同样地，板块的移动会引发地震，产生巨大的地震波。`
         }
       ]
     },
     {
-      title: "篇章二：Environment, Energy & Agricultural Science",
-      subtitle: "环境、能源与农业科学",
+      title: "Theme 2: Geographical Coordinates and Diverse Landforms",
+      subtitle: "地理坐标与多样的地貌",
       paragraphs: [
         {
-          english: `As the global population burgeon at an unprecedented rate, the agricultural sector faces mounting pressure to meet food demand while protecting the environment. Across thousands of hectare of farmland, farmers are adopting sustainable practices to boost crop yield without degrading soil health, while reducing emissions of methane from livestock, a potent greenhouse gas. The density of livestock in industrial farms has been linked to a host of environmental issues, including water pollution and soil degradation, nevertheless many nations are slow to enforce stricter regulations.`,
-          chinese: `随着全球人口以前所未有的速度快速增长，农业部门在保护环境的同时满足粮食需求的压力与日俱增。在数千公顷的农田上，农民们正在采用可持续的耕作方式，在不破坏土壤健康的前提下提高作物产量，同时减少牲畜排放的强效温室气体甲烷。工业化农场的牲畜养殖密度，与水污染、土壤退化等一系列环境问题密切相关，然而许多国家在执行更严格的法规方面行动迟缓。`
-        },
-        {
-          english: `The global energy transition is also a core topic of environmental debate, with nations split between investing in nuclear power, renewable energy, and fossil fuels. Electrical and electronic systems now power nearly every aspect of modern life, from home ventilation systems to industrial manufacturing, making the shift to clean energy more critical than ever. Oil spills from offshore drilling rig can cause catastrophic damage, as toxic chemicals seep into coastal waters, leaving a lingering odour of pollution and destroying marine ecosystems. Even small, slight changes to environmental policy can have massive long-term impacts, as seen in the recovery of forests once threatened by deforestation.`,
-          chinese: `全球能源转型也是环境辩论的核心议题，各国在投资核能、可再生能源与化石燃料之间分歧显著。如今，从家用通风系统到工业制造，电气与电子系统几乎为现代生活的方方面面提供动力，这使得向清洁能源的转型变得前所未有的重要。海上钻井平台的石油泄漏会造成灾难性的破坏，有毒化学物质会渗漏到沿海水域，留下挥之不去的污染气味，摧毁海洋生态系统。即便是对环境政策做出微小的调整，也能产生巨大的长期影响，正如曾经面临砍伐威胁的森林实现了生态恢复所印证的那样。`
+          english: `To navigate our vast globe, scientists use an imaginary grid of longitude and latitude. The Earth rotates on its axis, divided into the Northern and Southern hemisphere by the equator. At extreme ends lie the North pole and South Pole, regions known for their harsh polar environments. Here, the arctic and Antarctic regions are covered in ice. Looking toward the horizon, one can observe diverse terrain. The Earth's landscape varies significantly by altitude. Across every major continent—from Eurasia to the remote islands of Oceania—and projecting from the mainland to any coastal peninsula, nature's variety is astounding. You might find a hidden cave carved into a towering cliff, or a massive glacier slowly carving valleys. Low-lying areas feature muddy swamp environments, a fertile river delta, or a vast, flat plain. In contrast, high elevations form a majestic plateau, while arid regions may unexpectedly conceal a lush oasis.`,
+          chinese: `为了在广阔的地球上导航，科学家们使用经度和纬度构成的假想网格。地球绕着它的轴旋转，被赤道分为北半球和南半球。在最两端是北极和南极，这些地区以其严酷的极地环境而闻名。在这里，北极和南极地区都被冰雪覆盖。眺望地平线，人们可以观察到多样的地形。地球的地貌因海拔高度的不同而差异显著。跨越每个主要大陆——从欧亚大陆到大洋洲的偏远岛屿——从本土延伸到任何沿海的半岛，大自然的多样性令人惊叹。你可能会发现雕刻在巍峨悬崖上的隐秘洞穴，或者是正在缓慢侵蚀山谷的巨大冰川。低洼地区具有泥泞的沼泽环境、肥沃的河流三角洲或广阔平坦的平原。相比之下，高海拔地区则形成了雄伟的高原，而干旱地区可能会出人意料地隐藏着郁郁葱葱的绿洲。`
         }
       ]
     },
     {
-      title: "篇章三：Society, Education & Human Behaviour",
-      subtitle: "社会、教育与人类行为",
+      title: "Theme 3: Marine Environments and Water Bodies",
+      subtitle: "海洋环境与水文特征",
       paragraphs: [
         {
-          english: `A fair society is built on the principles of equity and mutual respect, where every individual has access to the support they need to thrive. For young people, guidance from educators and family members is critical to their development, helping them build the skills to navigate complex social hierarchy and develop strong leadership skills. An easy-going learning environment, rather than a rigid one, has been shown to boost student attendance and engagement, while reducing the risk of chronic stress and anxiety.`,
-          chinese: `一个公平的社会，建立在公平与相互尊重的原则之上，在这里，每个人都能获得成长所需的支持。对于年轻人而言，教育者与家人的指引对他们的成长至关重要，能帮助他们掌握驾驭复杂社会层级的能力，培养强大的领导能力。事实证明，相较于刻板的学习环境，随和包容的学习氛围能提升学生的出勤率与参与度，同时降低慢性压力与焦虑的风险。`
-        },
-        {
-          english: `Modern education systems now offer a wide variety of optional courses, from intermediate language classes to advanced science programs, which enable students to explore their interests and build specialized skills. The core purpose of education is not just to impart knowledge, but to nurture critical thinking and emotional maturity, helping young people understand the social impacts of immigration and migration in an increasingly globalized world. Research has explored the complex interplay between genetic factors and environmental influences on human behaviour, showing that while biology plays a role, daily routine and social context shape most of our actions. Similarly, studies have found that strong social bonds can reduce the risk of mental health issues, even for those facing significant hardship.`,
-          chinese: `如今的现代教育体系提供了丰富多样的选修课程，从中级语言班到高阶科学项目应有尽有，这使学生能够探索自身兴趣，培养专业技能。教育的核心目的，不仅是传授知识，更是培养批判性思维与情感成熟度，帮助年轻人理解在日益全球化的世界中，移民与人口迁徙带来的社会影响。相关研究探索了基因因素与环境影响对人类行为的复杂相互作用，结果表明，尽管生物学因素有一定影响，但日常惯例与社会环境塑造了我们的绝大多数行为。同样地，研究发现，即便是面对重大困境的人，牢固的社会联结也能降低其出现心理健康问题的风险。`
+          english: `The Earth is largely covered by vast bodies of water, from the enclosed Mediterranean Sea to the expansive Atlantic and the relatively pacific expanses of the largest ocean. These marine ecosystems are critical for life, while maritime navigation remains essential for global trade. Coastlines are highly varied; a sheltered gulf might feature a sandy beach, whereas another stretch of the coast or shore could be heavily stony. The rhythm of the sea is governed by the shifting tide and the steady, underlying current. Inland, water begins its journey at a mountain source, flowing into a small brook and then widening into a flowing stream. The physical features of these waterways differ greatly. Some areas are broad and shallow, with only superficial depths, spreading across a flat and smooth basin. Others force water through a rough, narrow gorge, flanked by vertical, steep rock walls that run parallel to the river's flow.`,
+          chinese: `地球的大部分被广阔的水体覆盖，从封闭的地中海到宽广的大西洋，再到最大洋（太平洋）中相对平静的广阔海域。这些海洋生态系统对生命至关重要，而海上航行对全球贸易依然不可或缺。海岸线的变化多端；一个受保护的海湾可能拥有沙质的海滩，而另一段海岸或滨水区则可能布满岩石（多石的）。海洋的节律受不断变化的潮汐和稳定、潜在的水流控制。在内陆，水从山上的源头开始它的旅程，流入小溪，然后变宽成流动的河流。这些水道的物理特征差异巨大。有些区域宽阔而浅，深度仅仅是表层的，蔓延在平坦且光滑的盆地上。另一些则迫使水流穿过粗糙、狭窄的峡谷，峡谷两侧是垂直、陡峭的岩壁，与水流方向平行。`
         }
       ]
     },
     {
-      title: "篇章四：Business, Economy & Urban Development",
-      subtitle: "商业、经济与城市发展",
+      title: "Theme 4: Meteorology, Climate, and Environmental Disasters",
+      subtitle: "气象、气候与环境灾难",
       paragraphs: [
         {
-          english: `The modern global economy is driven by the complex interplay between large consortium, small businesses, and individual consumer, whose choices shape every sector of the market. A core point of debate in economic policy is the balance between fair wage for workers and corporate profitability, with many workers arguing that their pay has not kept pace with the massive rise in living costs. Companies that fail to offer fair working conditions forfeit the trust of their employees and customers, often leading to long-term financial losses.`,
-          chinese: `现代全球经济，由大型财团、中小企业与个体消费者之间复杂的相互作用所驱动，消费者的选择塑造了市场的每一个领域。经济政策辩论的一个核心要点，是工人的公平工资与企业盈利能力之间的平衡，许多工人认为，他们的薪资涨幅未能跟上生活成本的大幅上涨。未能提供公平工作条件的企业，会丧失员工与客户的信任，往往会导致长期的经济损失。`
+          english: `In the study of meteorology, there is a clear distinction between daily weather and long-term climate. Some regions enjoy a mild or moderate climate, requiring minimal artificial heating because the sun naturally manages to warm the earth via thermal radiation. The tropics are typically humid and moist, while a desert is incredibly arid. Even in relatively temperate zones, winter mornings can be damp with thick mist, soon followed by severe frost, a snowy landscape, or unexpected hail.`,
+          chinese: `在气象学的研究中，日常的天气和长期的气候之间有着明确的区别。一些地区享有温和或适度的气候，需要的人工供暖极少，因为太阳自然能通过热辐射使地球变暖。热带地区通常湿热且潮湿，而沙漠则极其干燥。即使在相对温和的地带，冬日的早晨也可能湿气沉沉，伴有浓雾，紧随其后的可能是严重的霜冻、白雪皑皑的风景或突如其来的冰雹。`
         },
         {
-          english: `The food and beverage industry is a key example of these dynamics, with brands competing to offer products that meet consumer demand for low calorie options, sustainable sourcing, and authentic flavours. Regional brands often struggle to compete with multinational corporations, nevertheless many have found success by focusing on local culture and unique product offerings. To secure a competitive edge, companies invest substantial amounts of input into research and development, rather than relying merely on marketing tactics. Many brands now use customer questionnaire to gather feedback, adjusting their products to align with consumer needs and viewpoint.`,
-          chinese: `食品饮料行业是这种动态的典型例证，各大品牌竞相推出满足消费者需求的产品，包括低卡路里选项、可持续采购原料与正宗风味。区域性品牌往往难以与跨国企业竞争，然而许多品牌通过聚焦本土文化与独特的产品定位，取得了成功。为了获得竞争优势，企业会在研发中投入大量的资源投入，而非仅仅依赖营销策略。如今，许多品牌通过客户问卷收集反馈，调整产品以契合消费者的需求与观点。`
-        },
-        {
-          english: `The rise of digital commerce has further transformed the market, with brands using unique code for online discounts, and a series of targeted marketing campaigns to reach new customers. Frequent variation in consumer trends can complicate long-term business planning, as brands must adapt quickly to shifting demand. Companies often review their sales data weekly to identify gaps in the market, and will reject any product that fails to meet quality standards. Many businesses also face criticism for the fabrication of misleading advertising claims, which regulators are working to crack down on. Even small distraction from core business goals can reduce profit margin, so leaders must stay focused on their core mission. Many companies also seek to sponsor local community events, which can boost brand loyalty and justify their investment in corporate social responsibility. Close cooperation between departments is also critical to a company's success, ensuring that every team is aligned on shared goals.`,
-          chinese: `数字商务的兴起进一步改变了市场格局，品牌会使用专属代码提供线上折扣，并通过一系列精准的营销活动触达新客户。消费趋势的频繁变动会使长期商业规划复杂化，品牌必须快速适应不断变化的市场需求。企业通常会每周复盘销售数据，寻找市场空白，同时会拒收任何不符合质量标准的产品。许多企业还因捏造具有误导性的广告宣传而受到批评，监管机构正着力打击此类行为。即便是微小的干扰，让企业偏离核心商业目标，也会压缩利润空间，因此管理者必须始终聚焦核心使命。许多企业还寻求赞助当地社区活动，这能提升品牌忠诚度，也能为其在企业社会责任上的投入正名。部门之间的密切合作，对企业的成功同样至关重要，能确保所有团队都围绕共同目标协同发力。`
-        }
-      ]
-    },
-    {
-      title: "篇章五：Science, Medicine & Technology",
-      subtitle: "科学、医学与技术",
-      paragraphs: [
-        {
-          english: `Modern science is built on the pursuit of exact and accurate data, with researchers working to uncover the fundamental laws that govern the natural world. In the field of medicine, physician rely on advanced technology to diagnose chronic illnesses and rare genetic conditions, developing treatments that can heal damaged tissues and improve patient outcomes. Medical research has shown that no single group is superior to another in terms of biological resilience, and that equal access to healthcare is a critical determinant of public health outcomes across the globe.`,
-          chinese: `现代科学建立在对精确的、准确的数据的追求之上，研究人员致力于揭示支配自然界的基本定律。在医学领域，内科医师依靠先进技术诊断慢性疾病与罕见遗传病，开发能够治愈受损组织、改善患者预后的治疗方案。医学研究表明，在生物恢复力方面，没有任何一个群体优于另一个群体，而平等的医疗获取机会，是全球公共健康水平的关键决定因素。`
-        },
-        {
-          english: `Ophthalmology, the study of eye health, has seen remarkable advances in recent decades, with researchers learning more about how the iris regulates light intake, and how even small damage to the eye can impact vision. The term "visual acuity" is used to denote the sharpness of a person's vision, which can be affected by a range of factors, from genetic conditions to environmental damage. Similarly, in the field of physics, researchers are exploring the limits of nuclear energy and quantum mechanics, using advanced electronic sensors to measure phenomena that are invisible to the naked eye.`,
-          chinese: `近几十年来，眼健康研究领域的眼科学取得了显著进展，研究人员对虹膜如何调节光线摄入、即便是眼部的微小损伤如何影响视力，有了更深入的了解。"视敏度"这一术语，用于表示人的视觉清晰度，它会受到一系列因素的影响，从遗传性疾病到环境损伤不一而足。同样地，在物理学领域，研究人员正在探索核能与量子力学的边界，使用先进的电子传感器测量肉眼不可见的现象。`
-        },
-        {
-          english: `The sustainable use of resource is a core focus of modern scientific research, as the entire planet faces the threat of climate change. Scientists work to develop technologies that reduce waste, improve energy efficiency, and protect fragile ecosystems, while also addressing the social factors that drive environmental harm. Physical health and environmental health are deeply interconnected, with research showing that exposure to pollution can cause a range of chronic illnesses, from respiratory disease to heart conditions. Nevertheless, advances in science and technology offer hope for a more sustainable future, as long as nations are willing to collaborate and invest in evidence-based solutions.`,
-          chinese: `随着整个地球面临气候变化的威胁，资源的可持续利用成为现代科学研究的核心焦点。科学家们致力于开发减少浪费、提升能源效率、保护脆弱生态系统的技术，同时解决导致环境破坏的社会因素。身体健康与环境健康深度关联，研究表明，接触污染物会引发一系列慢性疾病，从呼吸系统疾病到心脏病均在此列。然而，只要各国愿意开展合作，投资于循证解决方案，科技的进步就能为更可持续的未来带来希望。`
-        }
-      ]
-    },
-    {
-      title: "篇章六：Daily Life, Travel & Leisure",
-      subtitle: "日常生活、旅行与休闲",
-      paragraphs: [
-        {
-          english: `Daily life is filled with small, meaningful moments that shape our well-being, from sharing a home-cooked curry with friends to exploring the natural landscape of a new city. Many people rely on a van to transport camping gear for weekend trips, or take a tram to explore the city centre, stopping at a local café to read a monthly newsletter or a literary periodical. When checking into a hotel, a friendly receptionist will often provide information about local attractions, while security staff work to ensure guests feel safe during their stay.`,
-          chinese: `日常生活充满了塑造我们幸福感的微小而有意义的瞬间，从和朋友分享家常咖喱饭，到探索一座新城市的自然景观，皆是如此。许多人会依靠厢式货车运输周末露营的装备，或是乘坐有轨电车探索市中心，在当地的咖啡馆驻足，阅读月度时事通讯或是文学期刊。入住酒店时，友善的接待员通常会提供当地景点的相关信息，而安保人员则会全力保障客人入住期间的安全。`
-        },
-        {
-          english: `Travel is one of the most popular forms of leisure, with people flocking to coastal resort towns, mountain summit hiking trails, and zoological parks to see exotic animals like the crocodile. Many travellers still use traditional roll film cameras to capture their journeys, preferring the warm, authentic look of film photos over digital images. When exploring a new place, even a chink of light through an old stone wall can feel magical, and a tender conversation with a local can leave a lasting impression. To ensure a smooth trip, many travellers book accommodation in advance, and keep a clip of their passport and travel documents in a separate bag.`,
-          chinese: `旅行是最受欢迎的休闲方式之一，人们纷纷涌向海滨度假胜地、通往山巅峰顶的徒步路线，以及动物学主题公园，观赏鳄鱼等异域动物。许多旅行者仍在使用传统的胶卷相机记录旅途，相较于数码照片，他们更偏爱胶片照片温暖、真实的质感。探索一个新地方时，即便是从古老石墙缝隙中透进来的一缕光，也能充满魔力，而和当地人一次温柔的交谈，也会留下长久的印象。为了确保旅途顺利，许多旅行者会提前预订住宿，并把护照与旅行证件的复印件用夹子夹好，放在单独的包里。`
-        },
-        {
-          english: `Leisure activities also play a critical role in mental health, helping people process complex emotion and escape the stress of daily work. Many people play squash at their local sports centre, while others join a choir or take art classes to nurture their creativity. Urban development is advancing apace, with new parks and community spaces being built to give residents places to relax and connect. Even simple household tasks, like sweeping the floor with a broom or tightening the buckle on a backpack, can bring a sense of calm and routine to a busy day.`,
-          chinese: `休闲活动对心理健康也起着至关重要的作用，能帮助人们梳理复杂的情绪，逃离日常工作的压力。许多人会在当地的体育中心打壁球，还有人会加入合唱团、参加艺术课程，培养自己的创造力。城市发展正飞速推进，新的公园与社区空间不断落成，为居民提供放松与社交的场所。即便是简单的家务，比如用扫帚扫地，或是拧紧背包上的搭扣，也能给忙碌的一天带来平静与秩序感。`
-        },
-        {
-          english: `In the professional world, many people perform daily tasks from a home office, download work files, and refer to industry guidelines to complete their work. Job seekers will often prepare extensively for an interview, researching the company and practicing their answers to common questions. The extent to which remote work has become mainstream has surprised many industry experts, with many companies now offering hybrid work models. In emergency situations, such as floods or fires, local authorities will evacuate residents from at-risk areas, often building temporary embankment to hold back rising water.`,
-          chinese: `在职场中，许多人在家办公完成日常工作，下载工作文件，查阅行业准则来完成工作任务。求职者通常会为面试做充分的准备，调研公司情况，练习常见问题的回答。远程办公成为主流的程度，让许多行业专家都感到意外，如今许多公司都提供混合办公模式。在洪水、火灾等紧急情况下，地方当局会将居民从危险区域疏散，通常会修建临时堤防来阻挡上涨的水位。`
-        },
-        {
-          english: `Social dynamics also shape our daily interactions, from casual conversations with friends to formal meetings with colleagues. Many people struggle to persuade their friends to try a new activity, while others enjoy a friendly bet on the outcome of a sports game. A detective story or a true crime podcast can be a thrilling form of entertainment, while a stamp collection or a whistle from a passing train can bring back nostalgic memories. Many people occupy their free time with volunteer work, helping to address youth delinquency or support new immigrants settling into the country.`,
-          chinese: `社交动态也塑造着我们的日常互动，从和朋友的闲聊，到与同事的正式会议，无一例外。许多人很难说服朋友尝试一项新活动，而另一些人则喜欢就体育赛事的结果进行友好的打赌。侦探小说或是真实罪案播客，是一种极具吸引力的娱乐方式，而邮票收藏，或是路过火车的鸣笛声，都能唤起怀旧的回忆。许多人会用空闲时间投身志愿工作，助力解决青少年不良行为问题，或是帮助新移民适应本国生活。`
-        },
-        {
-          english: `The way we communicate is also shaped by subtle social cues, from subliminal signals in body language to the implication of a casual comment. A deliberate pause in a conversation can convey more meaning than words, while a sincere pardon can resolve a misunderstanding. In politics and diplomacy, an ambassador from one country will meet with leaders of another to build mutual trust and resolve conflicts. In competitive settings, from sports to politics, a decisive move can help a candidate defeat their opponent, while a fair competition is always the most respected. These small moments of connection and competition epitomise the full richness of human life, which can barely be captured in a single story. A surge of joy from a shared win, or the comfort of a loyal companion during hard times, are the moments that make life meaningful. Even those who are overweight or facing health challenges can find joy in these small moments, with support from friends and family. We often set a stint on our work hours to make time for these meaningful moments, ensuring that we do not let work take over our entire lives. When we congratulate a friend on their success, or help a stranger in need, we build a more compassionate and connected world.`,
-          chinese: `我们的沟通方式，也受到微妙社交线索的塑造，从肢体语言中潜意识的信号，到一句随口评论背后的隐含意义，皆是如此。对话中一次刻意的停顿，能比语言传递更多的含义，而一句真诚的抱歉，请再说一遍，能化解一场误会。在政治与外交领域，一国的大使会与另一国的领导人会面，建立相互信任，解决冲突。在从体育到政治的竞技场景中，一个决定性的举动，能帮助候选人击败对手，而公平的竞争永远最受尊重。这些联结与竞技的微小瞬间，集中体现了人类生活的全部丰富性，这是一个故事几乎无法完整呈现的。共同胜利带来的喜悦翻涌，或是艰难时刻里忠诚同伴的慰藉，才是让生命有意义的瞬间。即便是超重的人、或是面临健康挑战的人，也能在亲友的支持下，从这些微小的瞬间中找到快乐。我们常常为工作时长设定限额，为这些有意义的瞬间留出时间，确保不会让工作占据我们全部的生活。当我们为朋友的成功道贺，或是向需要帮助的陌生人伸出援手时，我们就在构建一个更具同理心、联结更紧密的世界。`
+          english: `However, extreme conditions often result in a major disaster, which is far more serious than a minor mishap. The greenhouse effect is a widely studied phenomenon that has caused global environments to deteriorate and naturally protective ecosystems to degrade. Unchecked industrial activities produce toxic smog and harmful chemical fume emissions, which only aggravate these issues. We must urgently upgrade our sustainable practices before we permanently jeopardise or endanger life on Earth. Events like the El Nino are highly destructive. A seemingly gentle breeze can quickly become a strong gust or a heavy gale. During the rainy monsoon season, a violent hurricane in the Atlantic, a swirling tornado in North America, or a fierce typhoon in Asia can bring catastrophic consequences. Such storms bring severe flooding, turning rivers into a raging torrent that can rapidly erode the soil. Alternatively, a lack of rain causes a deadly drought. Other forms of a natural calamity include an underwater earthquake triggering a massive tsunami, or heavy snowfalls causing a deadly mountain avalanche.`,
+          chinese: `然而，极端条件往往会导致重大的灾难，这比小灾难（小事故）严重得多。温室效应是一个被广泛研究的现象，它已导致全球环境恶化，使天然具有保护作用的生态系统退化（降解）。不受控制的工业活动产生有毒的雾霾和有害的化学烟雾排放，这只会加剧这些问题。我们必须紧急改善我们的可持续发展措施，以免永久地危及或危害地球上的生命。像厄尔尼诺这样的现象是极具破坏性的。看似温和的微风可能迅速演变成一阵狂风或大风。在多雨的季风季节，大西洋中狂暴的飓风、北美旋转的龙卷风或亚洲猛烈的台风都可能带来灾难性的后果。这样的风暴会带来严重的洪水泛滥，使河流变成肆虐的洪流，能迅速侵蚀土壤。另一方面，缺乏降雨会导致致命的干旱。自然灾难的其他形式还包括海底地震引发巨大的海啸，或是大雪引发致命的高山雪崩。`
         }
       ]
     }
@@ -147,105 +84,37 @@ export const unit2Article = {
     },
     {
       title: "篇章二：Business, Psychology & Society",
-      subtitle: "现代商业、职场与社会",
+      subtitle: "商业、心理学与社会",
       paragraphs: [
         {
-          english: `In today's commercial world, securing an internship is almost compulsory for young graduates. However, a recent survey revealed that a respondent often feels treated as a mere substitute. The pursuit of profit sometimes comes at the expense of employee well-being. This lack of clear exchange between staff and an administrator can impede progress and create disharmony.`,
-          chinese: `在当今的商业世界中，获得实习身份对年轻毕业生来说几乎是强制性的。然而，最近的一项调查显示，调查对象经常感到自己只是被当作代替者。对利润的追求有时是以牺牲员工福祉为代价的。员工与管理人员之间缺乏清晰的交流会阻碍进展并造成不和谐。`
+          english: `In the business world, a successful company must constantly evolve to maintain its competitive edge. Many firms invest heavily in research and development to innovate their products. The psychology of consumer behavior plays a crucial role in marketing strategies. Understanding why people make certain purchasing decisions can help companies tailor their approach. Social trends also influence business operations, as companies must adapt to changing cultural norms and values.`,
+          chinese: `在商业世界中，一家成功的公司必须不断进化以保持其竞争优势。许多公司在研发上投入巨资以创新其产品。消费者行为心理学在营销策略中起着至关重要的作用。理解人们做出某些购买决策的原因可以帮助公司调整其方法。社会趋势也会影响商业运营，因为公司必须适应不断变化的文化规范和价值观。`
         },
         {
-          english: `When colleagues disagree, it is essential to foster an inclusive environment. If workers have a reservation, a reasonable manager should address it rather than letting it escalate into a dispute or even a strike. To strengthen the team, the standard approach is not to rely exclusively on a workaholic culture. While industrious employees are valued, internal stress is a problem that should bother every leader.`,
-          chinese: `当同事们不同意（产生分歧）时，营造一个包容广阔的环境至关重要。如果员工有保留意见，合理的管理者应该解决它，而不是让它升级为争端甚至罢工。为了巩固团队，标准的做法是不应专门依赖工作狂文化。虽然勤奋的员工很有价值，但内部压力是一个应该烦扰每位领导者的问题。`
-        },
-        {
-          english: `A divisional head might manage a massive consignment in a way that runs counter to traditional convention. This unique concept often requires the company to invest in a counsellor to help staff achieve their ultimate ambition. To minimise wastage, leaders must regulate resources with careful discretion.`,
-          chinese: `部门主管可能会以一种与传统惯例相反的方式来管理一大批托运的货物。这种独一无二的概念通常需要公司投资聘请顾问，以帮助员工实现他们最终的雄心。为了使损耗降到最低，领导者必须谨慎地控制资源。`
-        },
-        {
-          english: `After a brief preparation, an ambitious committee might recruit a new representative or their overseas counterpart. If the finance department's comparative data shows losses, the CEO may need to reverse earlier decisions or ultimately resign. Consequently, sound judgment is crucial, and managers cannot remain ignorant or unaware of purely theoretical risks, ignoring voluntary feedback.`,
-          chinese: `经过简短的准备后，一个有野心的委员会可能会招募一名新代表或其海外地位相当的人。如果财政部门的比较数据显示亏损，首席执行官可能需要撤销（颠倒）早先的决定，或者最终辞职。因此，良好的判断力至关重要，管理者不能对纯理论的风险保持无知或未意识到，也不能无视自愿的反馈。`
-        }
-      ]
-    },
-    {
-      title: "篇章三：Literature, History & Daily Life",
-      subtitle: "文学、历史与日常生活",
-      paragraphs: [
-        {
-          english: `When studying the legacy of human culture, an anthropologist might read ancient literature or examine a historical transcript. Achieving a doctorate requires one to dedicate years to writing a detailed essay. Some ancient practices, like astrology, may seem like an illusion to us now, but they used to represent early attempts to understand the universe.`,
-          chinese: `在研究人类文化的遗产时，人类学家可能会阅读古代文献或检查历史文字记录。要在该领域获得博士学位，需要献身数年撰写详细的评论文。一些古老的实践，如占星学，现在对我们来说似乎是一种错觉，但它们曾经代表了人类理解宇宙的早期尝试。`
-        },
-        {
-          english: `Historically, life was far from the cosset we experience today. A humble abode lacked modern furniture or a refrigerator. To attain a comfortable life, a couple had to mould their environment using a rudimentary instrument made of brass. They didn't have a modern gadget or a light bulb to simplify their tasks. A pirate operating from a remote outpost faced even harsher conditions.`,
-          chinese: `在历史上，生活远非我们今天所体验的溺爱。简陋的住所缺乏现代家具或冰箱。为了获得舒适的生活，夫妇俩必须使用由黄铜制成的粗糙工具来塑造他们的环境。他们没有现代的小玩意或灯泡来简化任务。在偏远村落（前哨）活动的海盗面临着更加严酷的条件。`
-        },
-        {
-          english: `Today, we include many conveniences in our routines. During our leisure, we might entertain ourselves with a crossword, watch a performer on a trapeze, or take a luxurious cruise. We might tune a radio or use a medical device and a tablet to manage cardiovascular health. Everyday habits, like using a comb, needing to shave, or visiting a lavatory, are straightforward. However, packing luggage can still induce a state of muddle and irritation, especially if an emergency forces us to fold clothes quickly. To minimise stress, we must prepare suitably.`,
-          chinese: `今天，我们的日常生活中包含许多便利设施。在空闲时间，我们可能会通过玩纵横填字游戏、观看高空秋千上的表演者或参加豪华的航游来使自己娱乐。我们可能会调节收音机，或使用医疗装置和药片来管理心血管健康。日常习惯，如使用梳子、需要修面或去盥洗室，都非常简单。然而，为旅行打包行李仍然会引起一团糟和恼怒的状态，特别是如果突发事件迫使我们迅速折叠衣服。为了将压力减到最低限度，我们必须合适地进行准备。`
-        },
-        {
-          english: `Some historical ideas are ambiguous and their true meanings vanish over time. A scholar might quote a text, but if the words are not pronounceable, it creates a barrier. The notion of the atomic age didn't originate in a student dorm but through imaginative scientific mastery. Sometimes, old ideas are deemed decrepit and academics expel or exile them from modern thought, removing the gloss of the past. Yet, whether attending a lecture or watching a bird flap its wings, the incredible world never ceases to amaze, even if it strains our eyesight to take it all in.`,
-          chinese: `一些历史观念是模棱两可的，它们的真正含义随着时间突然消失。学者可能会引用一段文本，但如果这些词不可发音，就会产生障碍。原子时代的观念并非起源于学生宿舍，而是通过富有想象力的科学精通。有时，旧思想被认为是破旧的，学者们将它们从现代思想中驱逐或流放，剥去了过去的假象。然而，无论是听演讲还是观察鸟儿拍打翅膀，这个难以置信的世界永远令人惊叹，即使它使我们的视力紧张以至于难以看清一切。`
+          english: `The relationship between employers and employees has evolved significantly over time. Modern workplaces emphasize work-life balance and mental health support. Remote work has become increasingly common, requiring new management approaches. Team collaboration tools have become essential for maintaining productivity across distributed teams. Companies that prioritize employee well-being often see higher retention rates and better overall performance.`,
+          chinese: `雇主与雇员之间的关系随着时间的推移发生了显著变化。现代工作场所强调工作与生活平衡以及心理健康支持。远程工作变得越来越普遍，需要新的管理方法。团队协作工具对于维持分布式团队的生产力变得至关重要。优先考虑员工福祉的公司通常会看到更高的留任率和更好的整体绩效。`
         }
       ]
     }
   ] as ArticleSection[]
 };
 
-// 为了保持向后兼容，提供paragraphs数组
-export const unit2ArticleLegacy = {
-  paragraphs: unit2Article.sections.flatMap(s => s.paragraphs)
-};
-
-// Unit 3 文章数据 - 按篇章分组，每篇包含标题和段落
+// Unit 3 文章数据
 export const unit3Article = {
   sections: [
     {
-      title: "篇章一：Urban Development and Administrative Strategy",
-      subtitle: "城市发展与行政策略",
+      title: "篇章一：Technology & Innovation",
+      subtitle: "技术与创新",
       paragraphs: [
         {
-          english: `In the modern urban landscape, the quality of infrastructure is a major concern for any administration. To enhance the city's property, a shrewd coordinator must allocate funds with a specific objective. Sometimes, this involves a bid process where a shareholder might propose to demolish a decrepit turret to make room for a durable luxury complex. Such a purchase is not necessarily a privilege for the rich, but an execution of an annual plan to remove a vacant slum.`,
-          chinese: `在现代都市景观中，基础设施的质量是任何管理部门的主要关注点。为了增强城市的房产价值，一位精明的协调者必须针对特定目标分配资金。有时，这涉及到投标过程，股东可能会提议拆除一个破旧的角楼，为耐用的豪华建筑群腾出空间。这样的购买未必是富人的特权，而是执行一项旨在清除空置贫民区的年度计划。`
+          english: `The rapid advancement of technology has transformed every aspect of modern life. From smartphones to artificial intelligence, innovations continue to reshape how we work, communicate, and live. The digital revolution has created new opportunities while also presenting unique challenges. Data privacy and cybersecurity have become critical concerns in our increasingly connected world.`,
+          chinese: `技术的快速发展改变了现代生活的方方面面。从智能手机到人工智能，创新不断重塑我们的工作、交流和生活方式。数字革命创造了新的机会，同时也带来了独特的挑战。数据隐私和网络安全在我们日益互联的世界中已成为关键问题。`
         },
         {
-          english: `However, the distribution of resources often leads to conflict. A tenant might oppose the transfer of their heritage to a former independent zone. They may underline that the constant circulation of statistics does not depict their actual suffering. If a defect in the plan is found, the execution must interrupt. A specialist is then required to calculate the approximate improvement. To activate the project again, a license must be issued to entitle the cooperative team to repaint the shutter and fix the infrastructure.`,
-          chinese: `然而，资源的分配经常导致冲突。承租人可能会反对将他们的遗产转移到以前的独立区域。他们可能会强调，统计数字的持续流传并不能描绘他们实际的痛苦。如果发现计划中的缺陷，实施必须中断。随后需要一名专家来计算大约的改进。为了再次激活项目，必须颁发许可证，以赋予合作团队重新粉刷百叶窗并修复基础设施的权利。`
-        }
-      ]
-    },
-    {
-      title: "篇章二：Natural Ecosystems and Scientific Discovery",
-      subtitle: "自然生态系统与科学研究",
-      paragraphs: [
-        {
-          english: `The ecosystem of a coastal delta is a stable but fragile environment. Within a certain radius, migratory birds alight on the alluvial soil to nourish their young. Scientists discover that the nutrition of these birds depends on a sequence of biological events. For instance, the dormancy of certain plants ends when the atmospheric moisture begins to evaporate. However, widespread pollution can corrode the inlet，creating a hazard for the fauna.`,
-          chinese: `沿海三角洲的生态系统是一个稳定但脆弱的环境。在一定的半径范围内，迁徙的鸟类落在冲积土上抚育幼鸟。科学家发现这些鸟类的营养取决于一系列生物事件。例如，当大气水分开始蒸发时，某些植物的休眠就会结束。然而，分布广泛的污染会腐蚀水湾，为动物群创造危险。`
-        },
-        {
-          english: `In the desert，researchers grope through the shade of ancient rocks to find a fossil. They distill data to conclude the fate of species that could not cope with climate change. To concentrate on a particular discovery, they use a lens to examine the latent crack in a durable stone. They calculate the soluble property of minerals, hoping to find an antidote to environmental decay. The discovery of exotic species often brings a compliment from the scientific community, as it provides a tangible demonstration of how life expands even in awful conditions.`,
-          chinese: `在沙漠中，研究人员在古老岩石的阴影中摸索，寻找化石。他们提取数据以推断出那些无法应付气候变化的物种的命运。为了专注于特定的发现，他们使用透镜检查耐用石头中潜伏的裂缝。他们计算矿物质的可溶性质，希望能找到环境衰退的矫正方法。奇异物种的发现经常赢得科学界的赞美，因为它有形地论证了生命甚至在糟糕的条件下是如何扩张的。`
-        }
-      ]
-    },
-    {
-      title: "篇章三：Ethics, Society, and Daily Life",
-      subtitle: "伦理、社会与日常生活",
-      paragraphs: [
-        {
-          english: `In a psychiatric clinic, a specialist might prescribe medication to help a patient cope with latent stress. The headmaster of a local school is often a coordinator for ethical education, ensuring that no student becomes a truant. For an intern, gaining a qualification is the ultimate destiny. They must work hard to bolster their literacy and avoid any scandal that could mishandle their future. To wean someone off an addiction to alcohol is a difficult task, requiring the suppression of harmful desires.`,
-          chinese: `在精神病诊所，专科医生可能会开出药物来帮助病人应付潜在的压力。当地学校的校长通常是道德教育的协调者，确保没有学生逃学。对于一名实习生来说，获得资格是最终的命运。他们必须努力工作以增强他们的文化修养，并避免任何可能误导（错误处理）他们前途的丑闻。让某人戒掉酒瘾是一项艰巨的任务，需要抑制有害的欲望。`
-        },
-        {
-          english: `Life is full of mechanical tasks; we use a pulley or a lever to move heavy objects, and we check the windscreen of a car before a long journey. During a campfire, people share souvenirs and crisp, enjoying a decent leisure time. However, a trap always exists for the ignorant. One must be shrewd to discover a scandal or an explosive situation. It is excusable to feel guilty or have a sore heart when a redundant subscription is mishandled. Ultimately, whether we are a naked immigrant or a headmaster, our heritage and honour are virtually what define us.`,
-          chinese: `生活充满了机械任务；我们使用滑轮或杠杆来移动重物，在长途旅行前我们会检查汽车的挡风玻璃。在营火旁，人们分享纪念品和薯片，享受像样的悠闲时光。然而，对于无知的人来说，陷阱总是存在的。一个人必须机灵才能发觉丑闻或令人冲动的局面。当一份多余的订阅被胡乱操作时，感到内疚或心痛是可原谅的。最终，无论我们是赤手空拳（无遮蔽）的移民还是校长，我们的传统和光荣实际上才是定义我们的东西。`
+          english: `Emerging technologies such as blockchain, quantum computing, and renewable energy solutions are pushing the boundaries of what's possible. These innovations promise to address some of humanity's most pressing challenges, from climate change to healthcare accessibility. However, they also raise important ethical questions that society must address.`,
+          chinese: `区块链、量子计算和可再生能源解决方案等新兴技术正在突破可能性的边界。这些创新有望解决人类一些最紧迫的挑战，从气候变化到医疗保健的可及性。然而，它们也提出了社会必须解决的重要伦理问题。`
         }
       ]
     }
   ] as ArticleSection[]
-};
-
-// 为了保持向后兼容，提供paragraphs数组
-export const unit3ArticleLegacy = {
-  paragraphs: unit3Article.sections.flatMap(s => s.paragraphs)
 };

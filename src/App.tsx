@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import './App.css'
 import { getData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress } from './dataService'
 import WordPreview from './components/WordPreview'
@@ -7,7 +7,7 @@ import Test from './components/Test'
 import Stats from './components/Stats'
 import WrongWords from './components/WrongWords'
 import WrongWordsTest from './components/WrongWordsTest'
-import { LearningProgress } from './types'
+import { LearningProgress, TestResult } from './types'
 
 interface OverallProgress {
   totalUnits: number;
@@ -36,10 +36,18 @@ function App() {
     return saved ? JSON.parse(saved) : false
   })
 
+  const [testResults, setTestResults] = useState<TestResult[]>([])
+
+  const isUnitCompleted = useMemo(() => {
+    const completedSet = new Set(testResults.map(r => r.unitId))
+    return (unitId: string) => completedSet.has(unitId)
+  }, [testResults])
+
   useEffect(() => {
     const data = getData()
     setUnits(data.units)
     setCurrentUnitIdState(data.currentUnitId)
+    setTestResults(data.testResults || [])
     const progress = getLearningProgress()
     setLastProgress(progress || null)
     setOverallProgress(getOverallProgress())
@@ -117,7 +125,7 @@ function App() {
     // 如果用户点击了错题本按钮，显示错题本页面
     if (showWrongWords) {
       return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
@@ -172,7 +180,7 @@ function App() {
 
           {/* Footer */}
           <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
               <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
             </div>
           </footer>
@@ -183,7 +191,7 @@ function App() {
     // 如果用户点击了错题本测试按钮，显示错题本测试页面
     if (showWrongWordsTest) {
       return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
@@ -238,7 +246,7 @@ function App() {
 
           {/* Footer */}
           <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
               <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
             </div>
           </footer>
@@ -249,7 +257,7 @@ function App() {
     // 如果用户点击了设置按钮，显示设置页面
     if (activeTab === 'settings') {
       return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
@@ -328,7 +336,7 @@ function App() {
 
           {/* Footer */}
           <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
               <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
             </div>
           </footer>
@@ -338,7 +346,7 @@ function App() {
 
     // 否则显示单元选择页面
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         {/* Header */}
         <header className="navbar">
           <div className="navbar-container">
@@ -374,7 +382,7 @@ function App() {
         <div className="page-container">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4">选择学习单元</h1>
-            <p className="text-lg" style={{ color: 'white' }}>
+            <p className="text-lg" style={{ color: 'var(--text-primary)' }}>
               共有 {units.length} 个单元，每个单元包含约 {units[0]?.words?.length || 0} 个单词
             </p>
           </div>
@@ -489,14 +497,23 @@ function App() {
                 onClick={() => handleUnitChange(unit.id)}
               >
                 <div className="unit-card-header">
-                  <h3 className="text-xl font-semibold">{unit.name}</h3>
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-xl font-semibold flex-1">{unit.name}</h3>
+                    {isUnitCompleted(unit.id) && (
+                      <span className="ml-2 text-2xl" style={{ color: 'var(--accent-green)' }}>
+                        ✅
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="unit-card-body">
-                  <p className="text-sm" style={{ color: 'white' }}>
+                  <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
                     单词数量: {unit.words?.length || 0}
                   </p>
                   <div className="mt-4">
-                    <span className="btn btn-primary">开始学习</span>
+                    <span className="btn btn-primary">
+                      {isUnitCompleted(unit.id) ? '继续学习' : '开始学习'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -506,7 +523,7 @@ function App() {
 
         {/* Footer */}
         <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-          <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+          <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
             <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
           </div>
         </footer>
@@ -516,7 +533,7 @@ function App() {
 
   // 学习页面
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'white' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
       {/* Top Navigation Bar */}
       <nav className="navbar-top">
         <div className="navbar-container">
@@ -699,7 +716,15 @@ function App() {
           ) : activeTab === 'article' ? (
             <ArticleReader unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
           ) : activeTab === 'test' ? (
-            <Test unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+            <Test 
+              unitId={currentUnitId} 
+              onSwitchUnit={handleBackToUnits}
+              onTestComplete={() => {
+                const data = getData();
+                setTestResults(data.testResults || []);
+                setOverallProgress(getOverallProgress());
+              }}
+            />
           ) : activeTab === 'stats' ? (
             <Stats unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
           ) : activeTab === 'settings' ? (
@@ -746,7 +771,7 @@ function App() {
 
       {/* Footer */}
       <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-        <div className="max-w-6xl mx-auto text-center" style={{ color: 'white' }}>
+        <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
           <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
         </div>
       </footer>
