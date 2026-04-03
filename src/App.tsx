@@ -31,6 +31,10 @@ function App() {
   const [overallProgress, setOverallProgress] = useState<OverallProgress | null>(null)
   const [showWrongWords, setShowWrongWords] = useState(false)
   const [showWrongWordsTest, setShowWrongWordsTest] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode')
+    return saved ? JSON.parse(saved) : false
+  })
 
   useEffect(() => {
     const data = getData()
@@ -40,6 +44,19 @@ function App() {
     setLastProgress(progress || null)
     setOverallProgress(getOverallProgress())
   }, [])
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
 
   // 保存学习进度
   useEffect(() => {
@@ -125,6 +142,13 @@ function App() {
                 >
                   设置
                 </button>
+                <button
+                  className="theme-toggle-btn"
+                  onClick={toggleDarkMode}
+                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+                >
+                  {isDarkMode ? '☀️' : '🌙'}
+                </button>
               </div>
             </div>
           </header>
@@ -184,6 +208,13 @@ function App() {
                 >
                   设置
                 </button>
+                <button
+                  className="theme-toggle-btn"
+                  onClick={toggleDarkMode}
+                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+                >
+                  {isDarkMode ? '☀️' : '🌙'}
+                </button>
               </div>
             </div>
           </header>
@@ -242,6 +273,13 @@ function App() {
                   }}
                 >
                   设置
+                </button>
+                <button
+                  className="theme-toggle-btn"
+                  onClick={toggleDarkMode}
+                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+                >
+                  {isDarkMode ? '☀️' : '🌙'}
                 </button>
               </div>
             </div>
@@ -320,6 +358,13 @@ function App() {
                 onClick={() => setActiveTab('settings')}
               >
                 设置
+              </button>
+              <button
+                className="theme-toggle-btn"
+                onClick={toggleDarkMode}
+                title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+              >
+                {isDarkMode ? '☀️' : '🌙'}
               </button>
             </div>
           </div>
@@ -495,6 +540,13 @@ function App() {
               }}
             >
               设置
+            </button>
+            <button
+              className="theme-toggle-btn"
+              onClick={toggleDarkMode}
+              title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+            >
+              {isDarkMode ? '☀️' : '🌙'}
             </button>
           </div>
         </div>
