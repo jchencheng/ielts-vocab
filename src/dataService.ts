@@ -1,5 +1,6 @@
-import { UserData, Unit, TestResult, TestProgress } from './types';
-import { unit1Article, unit2Article, unit3Article } from './articleData';
+import { UserData, Unit, TestResult, TestProgress, CustomArticle } from './types';
+import { unit1Article, unit2Article, unit3Article, ArticleSection } from './articleData';
+import { indexedDbService } from './indexedDbService';
 
 const STORAGE_KEY = 'ielts-pwa-data';
 
@@ -29653,7 +29654,7 @@ const defaultUnits: Unit[] = [
 ];
 
 // 初始化数据
-export const initializeData = (): UserData => {
+export const initializeData = async (): Promise<UserData> => {
   try {
     // 处理默认单元数据
     const processedUnits = defaultUnits.map((unit, index) => {
@@ -29714,8 +29715,8 @@ export const initializeData = (): UserData => {
       wrongWords: []
     };
     
-    // 保存初始化数据到localStorage
-    saveData(initialData);
+    // 保存初始化数据到IndexedDB
+    await saveData(initialData);
     return initialData;
   } catch (error) {
     console.error('Error initializing data:', error);
@@ -29766,17 +29767,23 @@ const generateChineseTranslation = (englishText: string): string => {
 };
 
 // 保存数据
-export const saveData = (data: UserData): void => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export const saveData = async (data: UserData): Promise<void> => {
+  try {
+    await indexedDbService.saveData(data);
+  } catch (error) {
+    console.error('Error saving data to IndexedDB:', error);
+    // 降级到localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
 };
 
 // 获取数据
-export const getData = (): UserData => {
+export const getData = async (): Promise<UserData> => {
   try {
-    const storedData = localStorage.getItem(STORAGE_KEY);
+    const storedData = await indexedDbService.getData();
     if (storedData) {
       try {
-        const parsedData = JSON.parse(storedData);
+        const parsedData = storedData;
         // 兼容处理：将字符串格式的article转换为Article对象格式
         let needsUpdate = false;
         
@@ -29839,27 +29846,40 @@ export const getData = (): UserData => {
         });
         // 如果有数据被转换，保存更新后的数据
         if (needsUpdate) {
-          saveData(parsedData);
+          await saveData(parsedData);
         }
         return parsedData;
       } catch (error) {
         console.error('Failed to parse stored data:', error);
-        // 如果解析失败，清除localStorage并重新初始化
-        localStorage.removeItem(STORAGE_KEY);
-        return initializeData();
+        // 如果解析失败，清除IndexedDB并重新初始化
+        await indexedDbService.removeData();
+        return await initializeData();
       }
     }
   } catch (error) {
-    console.error('Error accessing localStorage:', error);
-    // 如果localStorage不可用，直接返回初始化数据
-    return initializeData();
+    console.error('Error accessing IndexedDB:', error);
+    // 降级到localStorage
+    try {
+      const storedData = localStorage.getItem(STORAGE_KEY);
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          return parsedData;
+        } catch (parseError) {
+          localStorage.removeItem(STORAGE_KEY);
+          return await initializeData();
+        }
+      }
+    } catch (localStorageError) {
+      console.error('Error accessing localStorage:', localStorageError);
+    }
   }
-  return initializeData();
+  return await initializeData();
 };
 
 // 保存测试结果
-export const saveTestResult = (unitId: string, score: number, total: number): void => {
-  const data = getData();
+export const saveTestResult = async (unitId: string, score: number, total: number): Promise<void> => {
+  const data = await getData();
   const testResult: TestResult = {
     unitId,
     score,
@@ -29867,33 +29887,33 @@ export const saveTestResult = (unitId: string, score: number, total: number): vo
     date: new Date().toISOString()
   };
   data.testResults.push(testResult);
-  saveData(data);
+  await saveData(data);
 };
 
 // 获取单元的最高分数
-export const getHighestScore = (unitId: string): number => {
-  const data = getData();
+export const getHighestScore = async (unitId: string): Promise<number> => {
+  const data = await getData();
   const unitResults = data.testResults.filter(result => result.unitId === unitId);
   if (unitResults.length === 0) return 0;
   return Math.max(...unitResults.map(result => result.score));
 };
 
 // 获取单元的测试次数
-export const getTestCount = (unitId: string): number => {
-  const data = getData();
+export const getTestCount = async (unitId: string): Promise<number> => {
+  const data = await getData();
   return data.testResults.filter(result => result.unitId === unitId).length;
 };
 
 // 更新当前单元
-export const setCurrentUnit = (unitId: string): void => {
-  const data = getData();
+export const setCurrentUnit = async (unitId: string): Promise<void> => {
+  const data = await getData();
   data.currentUnitId = unitId;
-  saveData(data);
+  await saveData(data);
 };
 
 // 保存测试进度
-export const saveTestProgress = (progress: TestProgress): void => {
-  const data = getData();
+export const saveTestProgress = async (progress: TestProgress): Promise<void> => {
+  const data = await getData();
   if (!data.testProgress) {
     data.testProgress = [];
   }
@@ -29903,12 +29923,12 @@ export const saveTestProgress = (progress: TestProgress): void => {
   } else {
     data.testProgress.push(progress);
   }
-  saveData(data);
+  await saveData(data);
 };
 
 // 获取测试进度
-export const getTestProgress = (unitId: string): TestProgress | null => {
-  const data = getData();
+export const getTestProgress = async (unitId: string): Promise<TestProgress | null> => {
+  const data = await getData();
   if (!data.testProgress) {
     return null;
   }
@@ -29916,53 +29936,103 @@ export const getTestProgress = (unitId: string): TestProgress | null => {
 };
 
 // 清除测试进度
-export const clearTestProgress = (unitId: string): void => {
-  const data = getData();
+export const clearTestProgress = async (unitId: string): Promise<void> => {
+  const data = await getData();
   if (data.testProgress) {
     data.testProgress = data.testProgress.filter(p => p.unitId !== unitId);
-    saveData(data);
+    await saveData(data);
   }
 };
 
 // 保存学习进度
-export const saveLearningProgress = (progress: { unitId: string; unitName: string; activeTab: string; sectionIndex?: number; paragraphIndex?: number }): void => {
-  const data = getData();
+
+// 保存自定义文章
+export const saveCustomArticle = async (unitId: string, content: { sections: ArticleSection[] }): Promise<void> => {
+  const data = await getData();
+  if (!data.customArticles) {
+    data.customArticles = [];
+  }
+  
+  const existingIndex = data.customArticles.findIndex(article => article.unitId === unitId);
+  const now = new Date().toISOString();
+  
+  if (existingIndex >= 0) {
+    // 更新现有自定义文章
+    data.customArticles[existingIndex] = {
+      unitId,
+      content,
+      createdAt: data.customArticles[existingIndex].createdAt,
+      updatedAt: now
+    };
+  } else {
+    // 添加新的自定义文章
+    data.customArticles.push({
+      unitId,
+      content,
+      createdAt: now,
+      updatedAt: now
+    });
+  }
+  
+  await saveData(data);
+};
+
+// 获取自定义文章
+export const getCustomArticle = async (unitId: string): Promise<{ sections: ArticleSection[] } | null> => {
+  const data = await getData();
+  if (!data.customArticles) {
+    return null;
+  }
+  const article = data.customArticles.find(article => article.unitId === unitId);
+  return article ? article.content : null;
+};
+
+// 删除自定义文章
+export const deleteCustomArticle = async (unitId: string): Promise<void> => {
+  const data = await getData();
+  if (data.customArticles) {
+    data.customArticles = data.customArticles.filter(article => article.unitId !== unitId);
+    await saveData(data);
+  }
+};
+export const saveLearningProgress = async (progress: { unitId: string; unitName: string; activeTab: string; sectionIndex?: number; paragraphIndex?: number }): Promise<void> => {
+  const data = await getData();
   data.lastLearningProgress = {
     ...progress,
     lastLearningTime: new Date().toISOString()
   };
-  saveData(data);
+  await saveData(data);
 };
 
 // 获取学习进度
-export const getLearningProgress = () => {
-  const data = getData();
+export const getLearningProgress = async () => {
+  const data = await getData();
   return data.lastLearningProgress;
 };
 
 // 清除学习进度
-export const clearLearningProgress = (): void => {
-  const data = getData();
+export const clearLearningProgress = async (): Promise<void> => {
+  const data = await getData();
   delete data.lastLearningProgress;
-  saveData(data);
+  await saveData(data);
 };
 
 // 保存单词的"太简单"标记状态
-export const saveWordTooEasyStatus = (unitId: string, wordId: string, isTooEasy: boolean): void => {
-  const data = getData();
+export const saveWordTooEasyStatus = async (unitId: string, wordId: string, isTooEasy: boolean): Promise<void> => {
+  const data = await getData();
   const unit = data.units.find(u => u.id === unitId);
   if (unit) {
     const word = unit.words.find(w => w.id === wordId);
     if (word) {
       word.isTooEasy = isTooEasy;
-      saveData(data);
+      await saveData(data);
     }
   }
 };
 
 // 获取单元中标记为太简单的单词ID列表
-export const getTooEasyWordIds = (unitId: string): string[] => {
-  const data = getData();
+export const getTooEasyWordIds = async (unitId: string): Promise<string[]> => {
+  const data = await getData();
   const unit = data.units.find(u => u.id === unitId);
   if (unit) {
     return unit.words.filter(w => w.isTooEasy).map(w => w.id);
@@ -29971,8 +30041,8 @@ export const getTooEasyWordIds = (unitId: string): string[] => {
 };
 
 // 获取单元中需要学习的单词（排除太简单的）
-export const getStudyWords = (unitId: string) => {
-  const data = getData();
+export const getStudyWords = async (unitId: string) => {
+  const data = await getData();
   const unit = data.units.find(u => u.id === unitId);
   if (unit) {
     return unit.words.filter(w => !w.isTooEasy);
@@ -29981,8 +30051,8 @@ export const getStudyWords = (unitId: string) => {
 };
 
 // 保存段落阅读进度
-export const saveParagraphReadStatus = (unitId: string, sectionIndex: number, paragraphIndex: number, isRead: boolean): void => {
-  const data = getData();
+export const saveParagraphReadStatus = async (unitId: string, sectionIndex: number, paragraphIndex: number, isRead: boolean): Promise<void> => {
+  const data = await getData();
   if (!data.articleReadingProgress) {
     data.articleReadingProgress = [];
   }
@@ -30022,24 +30092,24 @@ export const saveParagraphReadStatus = (unitId: string, sectionIndex: number, pa
   }
   
   unitProgress.lastReadTime = new Date().toISOString();
-  saveData(data);
+  await saveData(data);
 };
 
 // 获取单元的文章阅读进度
-export const getArticleReadingProgress = (unitId: string) => {
-  const data = getData();
+export const getArticleReadingProgress = async (unitId: string) => {
+  const data = await getData();
   return data.articleReadingProgress?.find(p => p.unitId === unitId);
 };
 
 // 获取已读段落数量
-export const getReadParagraphCount = (unitId: string): number => {
-  const progress = getArticleReadingProgress(unitId);
+export const getReadParagraphCount = async (unitId: string): Promise<number> => {
+  const progress = await getArticleReadingProgress(unitId);
   return progress?.readParagraphs.filter(p => p.isRead).length || 0;
 };
 
 // 检查段落是否已读
-export const isParagraphRead = (unitId: string, sectionIndex: number, paragraphIndex: number): boolean => {
-  const progress = getArticleReadingProgress(unitId);
+export const isParagraphRead = async (unitId: string, sectionIndex: number, paragraphIndex: number): Promise<boolean> => {
+  const progress = await getArticleReadingProgress(unitId);
   if (!progress) return false;
   return progress.readParagraphs.some(
     p => p.sectionIndex === sectionIndex && p.paragraphIndex === paragraphIndex && p.isRead
@@ -30047,8 +30117,8 @@ export const isParagraphRead = (unitId: string, sectionIndex: number, paragraphI
 };
 
 // 获取总体学习进度
-export const getOverallProgress = () => {
-  const data = getData();
+export const getOverallProgress = async () => {
+  const data = await getData();
   
   let totalWords = 0;
   let studiedWords = 0;  // 标记为太简单的单词

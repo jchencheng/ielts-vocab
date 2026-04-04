@@ -14,20 +14,20 @@ const WrongWords: React.FC<WrongWordsProps> = ({ onSwitchUnit, onStartTest }) =>
     loadWrongWords();
   }, []);
 
-  const loadWrongWords = () => {
-    const words = getWrongWords();
+  const loadWrongWords = async () => {
+    const words = await getWrongWords();
     setWrongWords(words);
   };
 
-  const handleRemoveWord = (wordId: string) => {
-    removeFromWrongWords(wordId);
-    loadWrongWords();
+  const handleRemoveWord = async (wordId: string) => {
+    await removeFromWrongWords(wordId);
+    await loadWrongWords();
   };
 
-  const handleClearAll = () => {
+  const handleClearAll = async () => {
     if (window.confirm('确定要清空错题本吗？')) {
-      clearWrongWords();
-      loadWrongWords();
+      await clearWrongWords();
+      await loadWrongWords();
     }
   };
 

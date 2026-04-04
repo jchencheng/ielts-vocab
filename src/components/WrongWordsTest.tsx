@@ -20,16 +20,19 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
 
   // 加载错题本数据
   useEffect(() => {
-    const wrongWords = getWrongWords();
-    const testWords = wrongWords.map(word => ({
-      id: word.wordId,
-      english: word.english,
-      phonetic: word.phonetic,
-      partOfSpeech: word.partOfSpeech,
-      chinese: word.chinese,
-      example: word.example
-    }));
-    setWords(testWords);
+    const loadData = async () => {
+      const wrongWords = await getWrongWords();
+      const testWords = wrongWords.map(word => ({
+        id: word.wordId,
+        english: word.english,
+        phonetic: word.phonetic,
+        partOfSpeech: word.partOfSpeech,
+        chinese: word.chinese,
+        example: word.example
+      }));
+      setWords(testWords);
+    };
+    loadData();
   }, []);
 
   // 当currentIndex改变时生成新选项
@@ -79,7 +82,7 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
     setIsCorrect(false);
   };
 
-  const handleRemember = (value: boolean) => {
+  const handleRemember = async (value: boolean) => {
     setRemembered(value);
     if (value) {
       // 记得，显示选项
@@ -94,23 +97,23 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
       setAnsweredWords(newAnsweredWords);
       
       // 将单词重新加入错题本（增加错误次数）
-      addToWrongWords(currentWord);
+      await addToWrongWords(currentWord);
       
       // 延迟后进入下一题或显示结果
-      setTimeout(() => {
+      setTimeout(async () => {
         if (currentIndex < words.length - 1) {
           const newIndex = currentIndex + 1;
           setCurrentIndex(newIndex);
         } else {
           // 测试完成
-          saveTestResult('wrong-words', score, words.length);
+          await saveTestResult('wrong-words', score, words.length);
           setShowResult(true);
         }
       }, 1500);
     }
   };
 
-  const handleAnswer = (option: string) => {
+  const handleAnswer = async (option: string) => {
     if (isAnswered) return;
     
     setSelectedAnswer(option);
@@ -125,20 +128,20 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
       setScore(newScore);
     } else {
       // 回答错误，将单词重新加入错题本（增加错误次数）
-      addToWrongWords(currentWord);
+      await addToWrongWords(currentWord);
     }
     
     const newAnsweredWords = [...answeredWords, { wordId: currentWord.id, correct }];
     setAnsweredWords(newAnsweredWords);
     
     // 延迟后进入下一题或显示结果
-    setTimeout(() => {
+    setTimeout(async () => {
       if (currentIndex < words.length - 1) {
         const newIndex = currentIndex + 1;
         setCurrentIndex(newIndex);
       } else {
         // 测试完成
-        saveTestResult('wrong-words', newScore, words.length);
+        await saveTestResult('wrong-words', newScore, words.length);
         setShowResult(true);
       }
     }, 1500);

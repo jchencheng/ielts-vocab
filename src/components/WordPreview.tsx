@@ -14,21 +14,24 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
   const [wrongWordIds, setWrongWordIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const data = getData();
-    const unit = data.units.find(u => u.id === unitId);
-    if (unit) {
-      setWords(unit.words);
-      setUnitName(unit.name);
-      // 加载已标记为太简单的单词
-      const easyIds = new Set(unit.words.filter(w => w.isTooEasy).map(w => w.id));
-      setEasyWordIds(easyIds);
-      // 加载错题本中的单词
-      const wrongIds = new Set(unit.words.filter(w => isWordInWrongWords(w.id)).map(w => w.id));
-      setWrongWordIds(wrongIds);
-    }
+    const loadData = async () => {
+      const data = await getData();
+      const unit = data.units.find(u => u.id === unitId);
+      if (unit) {
+        setWords(unit.words);
+        setUnitName(unit.name);
+        // 加载已标记为太简单的单词
+        const easyIds = new Set(unit.words.filter(w => w.isTooEasy).map(w => w.id));
+        setEasyWordIds(easyIds);
+        // 加载错题本中的单词
+        const wrongIds = new Set(unit.words.filter(w => w.isWrong).map(w => w.id));
+        setWrongWordIds(wrongIds);
+      }
+    };
+    loadData();
   }, [unitId]);
 
-  const handleToggleTooEasy = (wordId: string) => {
+  const handleToggleTooEasy = async (wordId: string) => {
     const newEasyWordIds = new Set(easyWordIds);
     const isCurrentlyEasy = easyWordIds.has(wordId);
     
@@ -41,7 +44,7 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
     setEasyWordIds(newEasyWordIds);
     
     // 保存到数据存储
-    saveWordTooEasyStatus(unitId, wordId, !isCurrentlyEasy);
+    await saveWordTooEasyStatus(unitId, wordId, !isCurrentlyEasy);
     
     // 更新本地words状态
     setWords(prevWords => 

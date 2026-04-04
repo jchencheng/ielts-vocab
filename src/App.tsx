@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { getData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress } from './dataService'
+import { getData, saveData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress } from './dataService'
 import WordPreview from './components/WordPreview'
 import ArticleReader from './components/ArticleReader'
 import Test from './components/Test'
 import Stats from './components/Stats'
 import WrongWords from './components/WrongWords'
 import WrongWordsTest from './components/WrongWordsTest'
+import CustomArticleEditor from './components/CustomArticleEditor'
 import { LearningProgress, TestResult } from './types'
 
 interface OverallProgress {
@@ -44,13 +45,19 @@ function App() {
   }, [testResults])
 
   useEffect(() => {
-    const data = getData()
-    setUnits(data.units)
-    setCurrentUnitIdState(data.currentUnitId)
-    setTestResults(data.testResults || [])
-    const progress = getLearningProgress()
-    setLastProgress(progress || null)
-    setOverallProgress(getOverallProgress())
+    const loadData = async () => {
+      const data = await getData()
+      setUnits(data.units)
+      setCurrentUnitIdState(data.currentUnitId)
+      setTestResults(data.testResults || [])
+      
+      const progress = await getLearningProgress()
+      setLastProgress(progress || null)
+      
+      const overall = await getOverallProgress()
+      setOverallProgress(overall)
+    }
+    loadData()
   }, [])
 
   useEffect(() => {
@@ -68,21 +75,25 @@ function App() {
 
   // 保存学习进度
   useEffect(() => {
-    if (hasSelectedUnit && currentUnitId) {
-      const unit = units.find(u => u.id === currentUnitId)
-      if (unit) {
-        saveLearningProgress({
-          unitId: currentUnitId,
-          unitName: unit.name,
-          activeTab: activeTab
-        })
+    const saveProgress = async () => {
+      if (hasSelectedUnit && currentUnitId) {
+        const unit = units.find(u => u.id === currentUnitId)
+        if (unit) {
+          await saveLearningProgress({
+            unitId: currentUnitId,
+            unitName: unit.name,
+            activeTab: activeTab
+          })
+        }
       }
     }
+    saveProgress()
   }, [hasSelectedUnit, currentUnitId, activeTab, units])
 
-  const handleUnitChange = (unitId: string) => {
+  const handleUnitChange = async (unitId: string) => {
     setCurrentUnitIdState(unitId)
-    setCurrentUnit(unitId)
+    await setCurrentUnit(unitId)
+    setActiveTab('preview')
     setHasSelectedUnit(true)
   }
 
@@ -90,16 +101,21 @@ function App() {
     setHasSelectedUnit(false)
   }
 
-  const handleExportData = () => {
-    const data = getData()
-    const dataStr = JSON.stringify(data, null, 2)
-    const dataBlob = new Blob([dataStr], { type: 'application/json' })
-    const url = URL.createObjectURL(dataBlob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'ielts-vocab-data.json'
-    link.click()
-    URL.revokeObjectURL(url)
+  const handleExportData = async () => {
+    try {
+      const data = await getData()
+      const dataStr = JSON.stringify(data, null, 2)
+      const dataBlob = new Blob([dataStr], { type: 'application/json' })
+      const url = URL.createObjectURL(dataBlob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'ielts-vocab-data.json'
+      link.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Error exporting data:', error)
+      alert('导出数据失败，请重试。')
+    }
   }
 
   const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,9 +125,17 @@ function App() {
       reader.onload = (e) => {
         try {
           const importedData = JSON.parse(e.target?.result as string)
+          // 存储到localStorage
           localStorage.setItem('ielts-pwa-data', JSON.stringify(importedData))
-          alert('数据导入成功！')
-          window.location.reload()
+          // 同步到IndexedDB
+          saveData(importedData).then(() => {
+            alert('数据导入成功！')
+            window.location.reload()
+          }).catch((error) => {
+            console.error('Error saving data to IndexedDB:', error)
+            alert('数据导入成功！')
+            window.location.reload()
+          })
         } catch (error) {
           alert('数据导入失败，请确保文件格式正确。')
         }
@@ -613,6 +637,16 @@ function App() {
             >
               统计
             </button>
+            <button
+              className={`navbar-link ${activeTab === 'custom-article' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveTab('custom-article')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              自定义文章
+            </button>
           </div>
         </div>
       </nav>
@@ -660,6 +694,16 @@ function App() {
               }}
             >
               统计
+            </button>
+            <button
+              className={`navbar-link ${activeTab === 'custom-article' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveTab('custom-article')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              自定义文章
             </button>
             <button
               className={`navbar-link ${showWrongWords ? 'active' : ''}`}
@@ -727,6 +771,14 @@ function App() {
             />
           ) : activeTab === 'stats' ? (
             <Stats unitId={currentUnitId} onSwitchUnit={handleBackToUnits} />
+          ) : activeTab === 'custom-article' ? (
+            <CustomArticleEditor 
+              unitId={currentUnitId} 
+              onSave={() => {
+                // 保存成功后，切换到学习标签页，以便查看自定义文章
+                setActiveTab('article')
+              }}
+            />
           ) : activeTab === 'settings' ? (
             <div>
               <div className="flex items-center gap-4 mb-6">

@@ -25,31 +25,37 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
 
   // 加载单元数据（排除太简单的单词）
   useEffect(() => {
-    const data = getData();
-    const unit = data.units.find(u => u.id === unitId);
-    if (unit) {
-      // 获取需要学习的单词（排除标记为太简单的）
-      const studyWords = getStudyWords(unitId);
-      setWords(studyWords);
-      setUnitName(unit.name);
-    }
+    const loadData = async () => {
+      const data = await getData();
+      const unit = data.units.find(u => u.id === unitId);
+      if (unit) {
+        // 获取需要学习的单词（排除标记为太简单的）
+        const studyWords = await getStudyWords(unitId);
+        setWords(studyWords);
+        setUnitName(unit.name);
+      }
+    };
+    loadData();
   }, [unitId]);
 
   // 加载保存的进度或开始新测试
   useEffect(() => {
-    if (words.length > 0) {
-      const savedProgress = getTestProgress(unitId);
-      if (savedProgress && savedProgress.currentIndex < words.length) {
-        // 恢复进度
-        setCurrentIndex(savedProgress.currentIndex);
-        setScore(savedProgress.score);
-        setAnsweredWords(savedProgress.answeredWords);
-        setHasSavedProgress(true);
-      } else {
-        // 开始新测试
-        resetTest();
+    const loadProgress = async () => {
+      if (words.length > 0) {
+        const savedProgress = await getTestProgress(unitId);
+        if (savedProgress && savedProgress.currentIndex < words.length) {
+          // 恢复进度
+          setCurrentIndex(savedProgress.currentIndex);
+          setScore(savedProgress.score);
+          setAnsweredWords(savedProgress.answeredWords);
+          setHasSavedProgress(true);
+        } else {
+          // 开始新测试
+          await resetTest();
+        }
       }
-    }
+    };
+    loadProgress();
   }, [words, unitId]);
 
   // 当currentIndex改变时生成新选项
@@ -59,7 +65,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     }
   }, [currentIndex, words]);
 
-  const resetTest = () => {
+  const resetTest = async () => {
     setCurrentIndex(0);
     setScore(0);
     setShowResult(false);
@@ -70,7 +76,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     setSelectedAnswer('');
     setIsAnswered(false);
     setIsCorrect(false);
-    clearTestProgress(unitId);
+    await clearTestProgress(unitId);
   };
 
   const generateOptions = () => {
@@ -103,7 +109,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     setRemembered(null);
   };
 
-  const saveProgress = (newIndex: number, newScore: number, newAnsweredWords: { wordId: string; correct: boolean }[]) => {
+  const saveProgress = async (newIndex: number, newScore: number, newAnsweredWords: { wordId: string; correct: boolean }[]) => {
     const progress: TestProgress = {
       unitId,
       currentIndex: newIndex,
@@ -111,10 +117,10 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
       answeredWords: newAnsweredWords,
       lastUpdated: new Date().toISOString()
     };
-    saveTestProgress(progress);
+    await saveTestProgress(progress);
   };
 
-  const handleRemember = (value: boolean) => {
+  const handleRemember = async (value: boolean) => {
     setRemembered(value);
     if (value) {
       // 记得，显示选项
@@ -129,18 +135,18 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
       setAnsweredWords(newAnsweredWords);
       
       // 将单词加入错题本
-      addToWrongWords(currentWord);
+      await addToWrongWords(currentWord);
       
       // 延迟后进入下一题或显示结果
-      setTimeout(() => {
+      setTimeout(async () => {
         if (currentIndex < words.length - 1) {
           const newIndex = currentIndex + 1;
           setCurrentIndex(newIndex);
-          saveProgress(newIndex, score, newAnsweredWords);
+          await saveProgress(newIndex, score, newAnsweredWords);
         } else {
           // 测试完成
-          saveTestResult(unitId, score, words.length);
-          clearTestProgress(unitId);
+          await saveTestResult(unitId, score, words.length);
+          await clearTestProgress(unitId);
           setShowResult(true);
           if (onTestComplete) {
             onTestComplete();
@@ -150,7 +156,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     }
   };
 
-  const handleAnswer = (option: string) => {
+  const handleAnswer = async (option: string) => {
     if (isAnswered) return;
     
     setSelectedAnswer(option);
@@ -164,25 +170,25 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     if (correct) {
       setScore(newScore);
       // 回答正确，将单词从错题本中移除
-      removeFromWrongWords(currentWord.id);
+      await removeFromWrongWords(currentWord.id);
     } else {
       // 回答错误，将单词加入错题本
-      addToWrongWords(currentWord);
+      await addToWrongWords(currentWord);
     }
     
     const newAnsweredWords = [...answeredWords, { wordId: currentWord.id, correct }];
     setAnsweredWords(newAnsweredWords);
     
     // 延迟后进入下一题或显示结果
-    setTimeout(() => {
+    setTimeout(async () => {
       if (currentIndex < words.length - 1) {
         const newIndex = currentIndex + 1;
         setCurrentIndex(newIndex);
-        saveProgress(newIndex, newScore, newAnsweredWords);
+        await saveProgress(newIndex, newScore, newAnsweredWords);
       } else {
         // 测试完成
-        saveTestResult(unitId, newScore, words.length);
-        clearTestProgress(unitId);
+        await saveTestResult(unitId, newScore, words.length);
+        await clearTestProgress(unitId);
         setShowResult(true);
         if (onTestComplete) {
           onTestComplete();
@@ -191,13 +197,13 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
     }, 1500);
   };
 
-  const handleRestart = () => {
-    resetTest();
+  const handleRestart = async () => {
+    await resetTest();
   };
 
-  const handleRetryWrongWords = () => {
+  const handleRetryWrongWords = async () => {
     // 获取当前单元的错题
-    const allWrongWords = getWrongWords();
+    const allWrongWords = await getWrongWords();
     const unitWrongWords = allWrongWords.filter(word => {
       // 从wordId中提取单元信息，假设wordId格式为word-{unitNumber}-{wordNumber}
       const unitIdMatch = word.wordId.match(/word-(\d+)-\d+/);
@@ -221,7 +227,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
 
       // 设置为错题测试模式
       setWords(wrongWordsAsWord);
-      resetTest();
+      await resetTest();
     } else {
       alert('此单元没有错题！');
     }

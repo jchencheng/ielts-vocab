@@ -81,6 +81,13 @@ export interface WrongWord {
   errorCount: number;
 }
 
+export interface CustomArticle {
+  unitId: string;
+  content: { sections: ArticleSection[] };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserData {
   units: Unit[];
   testResults: TestResult[];
@@ -89,4 +96,5 @@ export interface UserData {
   lastLearningProgress?: LearningProgress;  // 上次学习进度
   articleReadingProgress?: ArticleReadingProgress[];  // 文章阅读进度
   wrongWords: WrongWord[];  // 错题本
+  customArticles?: CustomArticle[];  // 自定义文章
 }

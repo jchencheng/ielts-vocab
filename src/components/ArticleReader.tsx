@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getData, saveParagraphReadStatus, isParagraphRead } from '../dataService';
+import { getData, saveParagraphReadStatus, isParagraphRead, getCustomArticle } from '../dataService';
 import { Word, ArticleSection } from '../types';
 
 interface ArticleReaderProps {
@@ -22,60 +22,78 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
   const [totalParagraphs, setTotalParagraphs] = useState(0);
 
   useEffect(() => {
-    const data = getData();
-    const unit = data.units.find(u => u.id === unitId);
-    if (unit) {
-      // 处理article可能是字符串、Article对象或带sections的新格式
-      if (typeof unit.article === 'string') {
-        setSections([{ title: '学术文章', subtitle: '', paragraphs: [{ english: unit.article, chinese: '' }] }]);
-        setTotalParagraphs(1);
-      } else if ('sections' in unit.article && Array.isArray((unit.article as any).sections)) {
-        const secs = (unit.article as any).sections as ArticleSection[];
-        setSections(secs);
-        const total = secs.reduce((sum, s) => sum + s.paragraphs.length, 0);
-        setTotalParagraphs(total);
-      } else if ('paragraphs' in unit.article && Array.isArray((unit.article as any).paragraphs)) {
-        const paras = (unit.article as any).paragraphs;
-        setSections([{ title: '学术文章', subtitle: '', paragraphs: paras }]);
-        setTotalParagraphs(paras.length);
-      } else {
-        const art = unit.article as { english: string; chinese: string };
-        setSections([{ title: '学术文章', subtitle: '', paragraphs: [{ english: art.english, chinese: art.chinese }] }]);
-        setTotalParagraphs(1);
+    const loadData = async () => {
+      const data = await getData();
+      const unit = data.units.find(u => u.id === unitId);
+      if (unit) {
+        // 首先检查是否有自定义文章
+        const customArticle = await getCustomArticle(unitId);
+        if (customArticle) {
+          // 使用自定义文章
+          setSections(customArticle.sections);
+          const total = customArticle.sections.reduce((sum, s) => sum + s.paragraphs.length, 0);
+          setTotalParagraphs(total);
+        } else {
+          // 使用默认文章
+          // 处理article可能是字符串、Article对象或带sections的新格式
+          if (typeof unit.article === 'string') {
+            setSections([{ title: '学术文章', subtitle: '', paragraphs: [{ english: unit.article, chinese: '' }] }]);
+            setTotalParagraphs(1);
+          } else if ('sections' in unit.article && Array.isArray((unit.article as any).sections)) {
+            const secs = (unit.article as any).sections as ArticleSection[];
+            setSections(secs);
+            const total = secs.reduce((sum, s) => sum + s.paragraphs.length, 0);
+            setTotalParagraphs(total);
+          } else if ('paragraphs' in unit.article && Array.isArray((unit.article as any).paragraphs)) {
+            const paras = (unit.article as any).paragraphs;
+            setSections([{ title: '学术文章', subtitle: '', paragraphs: paras }]);
+            setTotalParagraphs(paras.length);
+          } else {
+            const art = unit.article as { english: string; chinese: string };
+            setSections([{ title: '学术文章', subtitle: '', paragraphs: [{ english: art.english, chinese: art.chinese }] }]);
+            setTotalParagraphs(1);
+          }
+        }
+        setWords(unit.words);
+        setUnitName(unit.name);
+        
+        // 加载已读段落
+        await loadReadParagraphs();
       }
-      setWords(unit.words);
-      setUnitName(unit.name);
-      
-      // 加载已读段落
-      loadReadParagraphs();
-    }
+    };
+    loadData();
   }, [unitId]);
 
-  const loadReadParagraphs = () => {
+  const loadReadParagraphs = async () => {
     const readSet = new Set<string>();
-    sections.forEach((section, secIdx) => {
-      section.paragraphs.forEach((_, paraIdx) => {
-        if (isParagraphRead(unitId, secIdx, paraIdx)) {
+    for (let secIdx = 0; secIdx < sections.length; secIdx++) {
+      const section = sections[secIdx];
+      for (let paraIdx = 0; paraIdx < section.paragraphs.length; paraIdx++) {
+        const isRead = await isParagraphRead(unitId, secIdx, paraIdx);
+        if (isRead) {
           readSet.add(`${secIdx}-${paraIdx}`);
         }
-      });
-    });
+      }
+    }
     setReadParagraphs(readSet);
   };
 
   // 当sections加载完成后，重新加载已读状态
   useEffect(() => {
-    if (sections.length > 0) {
-      loadReadParagraphs();
-    }
+    const load = async () => {
+      if (sections.length > 0) {
+        await loadReadParagraphs();
+      }
+    };
+    load();
   }, [sections, unitId]);
 
-  const handleToggleRead = (sectionIndex: number, paragraphIndex: number) => {
+  const handleToggleRead = async (sectionIndex: number, paragraphIndex: number) => {
     const key = `${sectionIndex}-${paragraphIndex}`;
     const isCurrentlyRead = readParagraphs.has(key);
     
     // 保存到数据存储
-    saveParagraphReadStatus(unitId, sectionIndex, paragraphIndex, !isCurrentlyRead);
+    await saveParagraphReadStatus(unitId, sectionIndex, paragraphIndex, !isCurrentlyRead);
     
     // 更新本地状态
     const newReadParagraphs = new Set(readParagraphs);
@@ -89,8 +107,10 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
 
   const highlightWords = (text: string) => {
     let result = text;
+    // 处理换行符，将其替换为<br>标签
+    result = result.replace(/\n/g, '<br>');
     words.forEach(word => {
-      const regex = new RegExp(`\\b${word.english}\\b`, 'gi');
+      const regex = new RegExp(`\b${word.english}\b`, 'gi');
       result = result.replace(regex, (match) => {
         return `<span class="highlight" data-word-id="${word.id}">${match}</span>`;
       });

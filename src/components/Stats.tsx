@@ -15,23 +15,26 @@ const Stats: React.FC<StatsProps> = ({ unitId, onSwitchUnit }) => {
   const [averageScore, setAverageScore] = useState(0);
 
   useEffect(() => {
-    const data = getData();
-    const unit = data.units.find(u => u.id === unitId);
-    if (unit) {
-      setUnitName(unit.name);
-    }
-    
-    const results = data.testResults.filter(result => result.unitId === unitId);
-    setTestResults(results);
-    setHighestScore(getHighestScore(unitId));
-    setTestCount(getTestCount(unitId));
-    
-    if (results.length > 0) {
-      const totalScore = results.reduce((sum, result) => sum + result.score, 0);
-      setAverageScore(totalScore / results.length);
-    } else {
-      setAverageScore(0);
-    }
+    const loadData = async () => {
+      const data = await getData();
+      const unit = data.units.find(u => u.id === unitId);
+      if (unit) {
+        setUnitName(unit.name);
+      }
+      
+      const results = data.testResults.filter(result => result.unitId === unitId);
+      setTestResults(results);
+      setHighestScore(await getHighestScore(unitId));
+      setTestCount(await getTestCount(unitId));
+      
+      if (results.length > 0) {
+        const totalScore = results.reduce((sum, result) => sum + result.score, 0);
+        setAverageScore(totalScore / results.length);
+      } else {
+        setAverageScore(0);
+      }
+    };
+    loadData();
   }, [unitId]);
 
   return (
