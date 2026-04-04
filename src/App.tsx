@@ -763,10 +763,15 @@ function App() {
             <Test 
               unitId={currentUnitId} 
               onSwitchUnit={handleBackToUnits}
-              onTestComplete={() => {
-                const data = getData();
-                setTestResults(data.testResults || []);
-                setOverallProgress(getOverallProgress());
+              onTestComplete={async () => {
+                try {
+                  const data = await getData();
+                  setTestResults(data.testResults || []);
+                  const progress = await getOverallProgress();
+                  setOverallProgress(progress);
+                } catch (error) {
+                  console.error('Error updating test results:', error);
+                }
               }}
             />
           ) : activeTab === 'stats' ? (

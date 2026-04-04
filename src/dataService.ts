@@ -1,4 +1,4 @@
-import { UserData, Unit, TestResult, TestProgress, CustomArticle } from './types';
+import { UserData, Unit, TestResult, TestProgress } from './types';
 import { unit1Article, unit2Article, unit3Article, ArticleSection } from './articleData';
 import { indexedDbService } from './indexedDbService';
 
@@ -30178,54 +30178,76 @@ export const getOverallProgress = async () => {
 };
 
 // 添加单词到错题本
-export const addToWrongWords = (word: { id: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string }): void => {
-  const data = getData();
-  
-  // 检查单词是否已经在错题本中
-  const existingIndex = data.wrongWords.findIndex(w => w.wordId === word.id);
-  
-  if (existingIndex >= 0) {
-    // 如果单词已存在，增加错误次数
-    data.wrongWords[existingIndex].errorCount += 1;
-  } else {
-    // 如果单词不存在，添加到错题本
-    data.wrongWords.push({
-      wordId: word.id,
-      english: word.english,
-      phonetic: word.phonetic,
-      partOfSpeech: word.partOfSpeech,
-      chinese: word.chinese,
-      example: word.example,
-      addedAt: new Date().toISOString(),
-      errorCount: 1
-    });
+export const addToWrongWords = async (word: { id: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string }): Promise<void> => {
+  try {
+    const data = await getData();
+    
+    // 检查单词是否已经在错题本中
+    const existingIndex = data.wrongWords.findIndex((w: any) => w.wordId === word.id);
+    
+    if (existingIndex >= 0) {
+      // 如果单词已存在，增加错误次数
+      data.wrongWords[existingIndex].errorCount += 1;
+    } else {
+      // 如果单词不存在，添加到错题本
+      data.wrongWords.push({
+        wordId: word.id,
+        english: word.english,
+        phonetic: word.phonetic,
+        partOfSpeech: word.partOfSpeech,
+        chinese: word.chinese,
+        example: word.example,
+        addedAt: new Date().toISOString(),
+        errorCount: 1
+      });
+    }
+    
+    await saveData(data);
+  } catch (error) {
+    console.error('Error adding word to wrong words:', error);
   }
-  
-  saveData(data);
 };
 
 // 从错题本中移除单词
-export const removeFromWrongWords = (wordId: string): void => {
-  const data = getData();
-  data.wrongWords = data.wrongWords.filter(w => w.wordId !== wordId);
-  saveData(data);
+export const removeFromWrongWords = async (wordId: string): Promise<void> => {
+  try {
+    const data = await getData();
+    data.wrongWords = data.wrongWords.filter((w: any) => w.wordId !== wordId);
+    await saveData(data);
+  } catch (error) {
+    console.error('Error removing word from wrong words:', error);
+  }
 };
 
 // 获取错题本列表
-export const getWrongWords = (): { wordId: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string; addedAt: string; errorCount: number }[] => {
-  const data = getData();
-  return data.wrongWords;
+export const getWrongWords = async (): Promise<{ wordId: string; english: string; phonetic: string; partOfSpeech: string; chinese: string; example: string; addedAt: string; errorCount: number }[]> => {
+  try {
+    const data = await getData();
+    return data.wrongWords;
+  } catch (error) {
+    console.error('Error getting wrong words:', error);
+    return [];
+  }
 };
 
 // 检查单词是否在错题本中
-export const isWordInWrongWords = (wordId: string): boolean => {
-  const data = getData();
-  return data.wrongWords.some(w => w.wordId === wordId);
+export const isWordInWrongWords = async (wordId: string): Promise<boolean> => {
+  try {
+    const data = await getData();
+    return data.wrongWords.some((w: any) => w.wordId === wordId);
+  } catch (error) {
+    console.error('Error checking if word is in wrong words:', error);
+    return false;
+  }
 };
 
 // 清空错题本
-export const clearWrongWords = (): void => {
-  const data = getData();
-  data.wrongWords = [];
-  saveData(data);
+export const clearWrongWords = async (): Promise<void> => {
+  try {
+    const data = await getData();
+    data.wrongWords = [];
+    await saveData(data);
+  } catch (error) {
+    console.error('Error clearing wrong words:', error);
+  }
 };

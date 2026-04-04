@@ -6,7 +6,6 @@ const STORE_NAME = 'user-data';
 const STORE_KEY = 'user-data-key';
 
 class IndexedDbService {
-  private db: IDBDatabase | null = null;
   private dbPromise: Promise<IDBDatabase>;
 
   constructor() {
@@ -24,7 +23,6 @@ class IndexedDbService {
 
       request.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
-        this.db = db;
         resolve(db);
       };
 

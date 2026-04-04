@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getData, saveWordTooEasyStatus, addToWrongWords, removeFromWrongWords, isWordInWrongWords } from '../dataService';
+import { getData, saveWordTooEasyStatus, addToWrongWords, removeFromWrongWords, getWrongWords } from '../dataService';
 import { Word } from '../types';
 
 interface WordPreviewProps {
@@ -24,8 +24,10 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
         const easyIds = new Set(unit.words.filter(w => w.isTooEasy).map(w => w.id));
         setEasyWordIds(easyIds);
         // 加载错题本中的单词
-        const wrongIds = new Set(unit.words.filter(w => w.isWrong).map(w => w.id));
-        setWrongWordIds(wrongIds);
+        const wrongWords = await getWrongWords();
+        const wrongWordIdsSet = new Set(wrongWords.map(w => w.wordId));
+        const unitWrongIds = new Set(unit.words.filter(w => wrongWordIdsSet.has(w.id)).map(w => w.id));
+        setWrongWordIds(unitWrongIds);
       }
     };
     loadData();

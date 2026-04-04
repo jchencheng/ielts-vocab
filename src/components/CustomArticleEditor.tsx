@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { saveCustomArticle, getCustomArticle, deleteCustomArticle, getData } from '../dataService';
-import { ArticleSection, Word } from '../types';
+import { ArticleSection } from '../types';
 
 interface CustomArticleEditorProps {
   unitId: string;
@@ -24,18 +24,15 @@ const CustomArticleEditor: React.FC<CustomArticleEditorProps> = ({ unitId, onSav
   const [isSaving, setIsSaving] = useState(false);
   const [fullText, setFullText] = useState('');
   const [fullTextChinese, setFullTextChinese] = useState('');
-  const [words, setWords] = useState<Word[]>([]);
+
 
   useEffect(() => {
     const loadCustomArticle = async () => {
       setIsLoading(true);
       try {
         // 获取本单元的单词列表
-        const data = await getData();
-        const unit = data.units.find(u => u.id === unitId);
-        if (unit) {
-          setWords(unit.words);
-        }
+        await getData();
+
         
         // 加载自定义文章
         const customArticle = await getCustomArticle(unitId);
@@ -108,18 +105,7 @@ const CustomArticleEditor: React.FC<CustomArticleEditorProps> = ({ unitId, onSav
   };
 
   // 高亮文本中的单词
-  const highlightWords = (text: string, isChinese: boolean = false) => {
-    let result = text;
-    if (!isChinese) {
-      words.forEach(word => {
-        const regex = new RegExp(`\\b${word.english}\\b`, 'gi');
-        result = result.replace(regex, (match) => {
-          return `<span class="highlight" data-word-id="${word.id}">${match}</span>`;
-        });
-      });
-    }
-    return result;
-  };
+
 
   // 自动识别段落并更新sections
   useEffect(() => {
