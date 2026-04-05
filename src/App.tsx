@@ -153,7 +153,12 @@ function App() {
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
-              <a href="#" className="navbar-logo">IELTS 单词记忆</a>
+              <a href="#" className="navbar-logo" onClick={() => {
+                setHasSelectedUnit(false);
+                setShowWrongWords(false);
+                setShowWrongWordsTest(false);
+                setActiveTab('preview');
+              }}>IELTS 单词记忆</a>
               <div className="top-nav-actions">
                 <button
                   className={`navbar-link ${showWrongWords ? 'active' : ''}`}
@@ -219,7 +224,12 @@ function App() {
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
-              <a href="#" className="navbar-logo">IELTS 单词记忆</a>
+              <a href="#" className="navbar-logo" onClick={() => {
+                setHasSelectedUnit(false);
+                setShowWrongWords(false);
+                setShowWrongWordsTest(false);
+                setActiveTab('preview');
+              }}>IELTS 单词记忆</a>
               <div className="top-nav-actions">
                 <button
                   className={`navbar-link ${showWrongWords ? 'active' : ''}`}
@@ -285,7 +295,12 @@ function App() {
           {/* Header */}
           <header className="navbar">
             <div className="navbar-container">
-              <a href="#" className="navbar-logo">IELTS 单词记忆</a>
+              <a href="#" className="navbar-logo" onClick={() => {
+                setHasSelectedUnit(false);
+                setShowWrongWords(false);
+                setShowWrongWordsTest(false);
+                setActiveTab('preview');
+              }}>IELTS 单词记忆</a>
               <div className="top-nav-actions">
                 <button
                   className={`navbar-link ${showWrongWords ? 'active' : ''}`}
