@@ -152,7 +152,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
             onTestComplete();
           }
         }
-      }, 1500);
+      }, 500);
     }
   };
 
@@ -194,7 +194,7 @@ const Test: React.FC<TestProps> = ({ unitId, onSwitchUnit, onTestComplete }) => 
           onTestComplete();
         }
       }
-    }, 1500);
+    }, 500);
   };
 
   const handleRestart = async () => {
