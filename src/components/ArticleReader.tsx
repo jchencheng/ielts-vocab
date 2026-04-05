@@ -105,16 +105,18 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
     setReadParagraphs(newReadParagraphs);
   };
 
-  const highlightWords = (text: string) => {
+  const highlightWords = (text: string, isChinese: boolean = false) => {
     let result = text;
     // 处理换行符，将其替换为<br>标签
     result = result.replace(/\n/g, '<br>');
-    words.forEach(word => {
-      const regex = new RegExp(`\b${word.english}\b`, 'gi');
-      result = result.replace(regex, (match) => {
-        return `<span class="highlight" data-word-id="${word.id}">${match}</span>`;
+    if (!isChinese) {
+      words.forEach(word => {
+        const regex = new RegExp(`\\b${word.english}\\b`, 'gi');
+        result = result.replace(regex, (match) => {
+          return `<span class="highlight" data-word-id="${word.id}">${match}</span>`;
+        });
       });
-    });
+    }
     return result;
   };
 
@@ -227,14 +229,14 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
                       {/* 英文段落 */}
                       <div 
                         className="text-lg leading-relaxed mb-3"
-                        dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.english) }}
+                        dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.english, false) }}
                       />
                       {/* 中文段落 - 根据开关显示 */}
                       {showTranslation && paragraph.chinese && (
                         <div 
                           className="text-lg leading-relaxed pl-4 border-l-4 border-blue-500 mb-4"
                           style={{ color: 'var(--text-secondary)' }}
-                          dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.chinese) }}
+                          dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.chinese, true) }}
                         />
                       )}
                       {/* 已读完标记按钮 */}
