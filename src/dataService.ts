@@ -5,7 +5,7 @@ import { indexedDbService } from './indexedDbService';
 const STORAGE_KEY = 'ielts-pwa-data';
 const DATA_VERSION_KEY = 'ielts-pwa-data-version';
 // 数据版本号，每次更新单词数据时递增
-const CURRENT_DATA_VERSION = '2.1.0-stardict-filtered';
+const CURRENT_DATA_VERSION = '2.2.0-force-refresh';
 
 // 从 parsedVocabulary.json 导入的数据
 import defaultUnits from './vocabularyData.json';
