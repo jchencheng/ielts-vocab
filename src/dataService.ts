@@ -10,36 +10,46 @@ const CURRENT_DATA_VERSION = '2.2.0-force-refresh';
 // 从 parsedVocabulary.json 导入的数据
 import defaultUnits from './vocabularyData.json';
 
-// 处理单元数据，添加文章
-const processedUnits: Unit[] = (defaultUnits as any[]).map((unit, index) => {
-  // 为每个单元分配对应的文章
-  let article: any = unit.article;
-  if (!article) {
-    // 根据单元索引分配文章
-    if (index === 0) {
-      article = unit1Article;
-    } else if (index === 1) {
-      article = unit2Article;
-    } else if (index === 2) {
-      article = unit3Article;
-    } else {
-      // 为其他单元生成默认文章
-      article = {
-        english: `This is a sample article for ${unit.name}. It contains vocabulary words from this unit to help you learn in context.`,
-        chinese: `这是${unit.name}的示例文章。它包含本单元的词汇，帮助你在语境中学习。`,
-        paragraphs: unit.words.slice(0, 10).map((word: any) => ({
-          english: `The word "${word.english}" is an important vocabulary word. ${word.example || ''}`,
-          chinese: `单词"${word.chinese}"是一个重要的词汇。`
-        }))
-      };
-    }
+// 懒加载处理后的单元数据
+let _processedUnits: Unit[] | null = null;
+
+const getProcessedUnits = (): Unit[] => {
+  if (_processedUnits) {
+    return _processedUnits;
   }
 
-  return {
-    ...unit,
-    article
-  };
-});
+  _processedUnits = (defaultUnits as any[]).map((unit, index) => {
+    // 为每个单元分配对应的文章
+    let article: any = unit.article;
+    if (!article) {
+      // 根据单元索引分配文章
+      if (index === 0) {
+        article = unit1Article;
+      } else if (index === 1) {
+        article = unit2Article;
+      } else if (index === 2) {
+        article = unit3Article;
+      } else {
+        // 为其他单元生成默认文章
+        article = {
+          english: `This is a sample article for ${unit.name}. It contains vocabulary words from this unit to help you learn in context.`,
+          chinese: `这是${unit.name}的示例文章。它包含本单元的词汇，帮助你在语境中学习。`,
+          paragraphs: unit.words.slice(0, 10).map((word: any) => ({
+            english: `The word "${word.english}" is an important vocabulary word. ${word.example || ''}`,
+            chinese: `单词"${word.chinese}"是一个重要的词汇。`
+          }))
+        };
+      }
+    }
+
+    return {
+      ...unit,
+      article
+    };
+  });
+
+  return _processedUnits;
+};
 
 // 检查是否需要更新数据
 const shouldUpdateData = (): boolean => {
@@ -66,11 +76,12 @@ export const initializeData = async (): Promise<UserData> => {
     saveDataVersion();
 
     // 使用新的默认数据
+    const units = getProcessedUnits();
     const initialData: UserData = {
-      units: processedUnits,
+      units,
       testResults: [],
       testProgress: [],
-      currentUnitId: processedUnits[0]?.id || '',
+      currentUnitId: units[0]?.id || '',
       wrongWords: []
     };
 
@@ -102,16 +113,67 @@ export const initializeData = async (): Promise<UserData> => {
   }
 
   // 使用默认数据
+  const units = getProcessedUnits();
   const initialData: UserData = {
-    units: processedUnits,
+    units,
     testResults: [],
     testProgress: [],
-    currentUnitId: processedUnits[0]?.id || '',
+    currentUnitId: units[0]?.id || '',
     wrongWords: []
   };
 
   await indexedDbService.saveData(initialData);
   return initialData;
+};
+
+// 数据迁移：将旧版数据迁移到新版格式
+const migrateData = (oldData: any): UserData => {
+  const processedUnits = getProcessedUnits();
+  
+  // 如果数据没有 units，返回默认数据
+  if (!oldData.units || !Array.isArray(oldData.units)) {
+    console.log('Invalid data format, using default data');
+    return {
+      units: processedUnits,
+      testResults: [],
+      testProgress: [],
+      currentUnitId: processedUnits[0]?.id || '',
+      wrongWords: []
+    };
+  }
+
+  // 迁移每个单元的数据
+  const migratedUnits = oldData.units.map((oldUnit: any, index: number) => {
+    // 使用当前默认数据中的对应单元作为基础
+    const defaultUnit = processedUnits[index] || processedUnits[0];
+    
+    // 如果旧单元有单词，保留测试进度和错题信息
+    // 但使用新版的单词数据
+    return {
+      ...defaultUnit,
+      // 保留旧单元的 ID 以便测试记录能对应上
+      id: oldUnit.id || defaultUnit.id,
+      // 但使用新版的单词列表（已过滤的）
+      words: defaultUnit.words
+    };
+  });
+
+  return {
+    units: migratedUnits,
+    testResults: oldData.testResults || [],
+    testProgress: oldData.testProgress || [],
+    currentUnitId: oldData.currentUnitId || migratedUnits[0]?.id || '',
+    wrongWords: oldData.wrongWords || [],
+    lastLearningProgress: oldData.lastLearningProgress,
+    articleReadingProgress: oldData.articleReadingProgress
+  };
+};
+
+// 验证导入的数据是否有效
+const validateImportedData = (data: any): boolean => {
+  if (!data || typeof data !== 'object') return false;
+  if (!data.units || !Array.isArray(data.units)) return false;
+  return true;
 };
 
 // 保存数据
@@ -122,6 +184,31 @@ export const saveData = async (data: UserData): Promise<void> => {
     console.error('Error saving data to IndexedDB:', error);
     // 降级到 localStorage
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+};
+
+// 导入数据（带验证和迁移）
+export const importData = async (importedData: any): Promise<boolean> => {
+  try {
+    // 验证数据格式
+    if (!validateImportedData(importedData)) {
+      console.error('Invalid data format');
+      return false;
+    }
+
+    // 迁移数据到新版格式
+    const migratedData = migrateData(importedData);
+    
+    // 保存迁移后的数据
+    await saveData(migratedData);
+    
+    // 更新数据版本
+    saveDataVersion();
+    
+    return true;
+  } catch (error) {
+    console.error('Error importing data:', error);
+    return false;
   }
 };
 

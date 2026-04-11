@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { getData, saveData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress } from './dataService'
+import { getData, saveData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress, importData } from './dataService'
 import WordPreview from './components/WordPreview'
 import ArticleReader from './components/ArticleReader'
 import Test from './components/Test'
@@ -118,29 +118,26 @@ function App() {
     }
   }
 
-  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportData = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        try {
-          const importedData = JSON.parse(e.target?.result as string)
-          // 存储到localStorage
-          localStorage.setItem('ielts-pwa-data', JSON.stringify(importedData))
-          // 同步到IndexedDB
-          saveData(importedData).then(() => {
-            alert('数据导入成功！')
-            window.location.reload()
-          }).catch((error) => {
-            console.error('Error saving data to IndexedDB:', error)
-            alert('数据导入成功！')
-            window.location.reload()
-          })
-        } catch (error) {
-          alert('数据导入失败，请确保文件格式正确。')
-        }
+    if (!file) return
+
+    try {
+      const text = await file.text()
+      const importedData = JSON.parse(text)
+      
+      // 使用新的导入函数（带验证和迁移）
+      const success = await importData(importedData)
+      
+      if (success) {
+        alert('数据导入成功！页面将重新加载。')
+        window.location.reload()
+      } else {
+        alert('数据导入失败：数据格式不正确或数据已损坏。')
       }
-      reader.readAsText(file)
+    } catch (error) {
+      console.error('Import error:', error)
+      alert('数据导入失败，请确保文件格式正确。')
     }
   }
 
