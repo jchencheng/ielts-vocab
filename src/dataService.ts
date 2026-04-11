@@ -129,7 +129,7 @@ export const initializeData = async (): Promise<UserData> => {
 // 数据迁移：将旧版数据迁移到新版格式
 const migrateData = (oldData: any): UserData => {
   const processedUnits = getProcessedUnits();
-  
+
   // 如果数据没有 units，返回默认数据
   if (!oldData.units || !Array.isArray(oldData.units)) {
     console.log('Invalid data format, using default data');
@@ -142,13 +142,34 @@ const migrateData = (oldData: any): UserData => {
     };
   }
 
+  // 构建旧数据中"太简单"单词的映射表
+  const tooEasyWordMap = new Map<string, boolean>();
+  for (const oldUnit of oldData.units) {
+    if (oldUnit.words && Array.isArray(oldUnit.words)) {
+      for (const word of oldUnit.words) {
+        if (word.isTooEasy) {
+          tooEasyWordMap.set(word.english.toLowerCase(), true);
+        }
+      }
+    }
+  }
+
+  // 将"太简单"标记应用到新数据的单词上
+  const migratedUnits = processedUnits.map(unit => ({
+    ...unit,
+    words: unit.words.map(word => ({
+      ...word,
+      isTooEasy: tooEasyWordMap.has(word.english.toLowerCase()) || false
+    }))
+  }));
+
   // 使用新版数据的单元结构（避免旧数据单元过多导致重复）
   // 只保留测试记录、错题本、自定义文章等用户数据
   return {
-    units: processedUnits,
+    units: migratedUnits,
     testResults: oldData.testResults || [],
     testProgress: oldData.testProgress || [],
-    currentUnitId: processedUnits[0]?.id || '',
+    currentUnitId: migratedUnits[0]?.id || '',
     wrongWords: oldData.wrongWords || [],
     lastLearningProgress: oldData.lastLearningProgress,
     articleReadingProgress: oldData.articleReadingProgress,
