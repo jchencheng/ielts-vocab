@@ -160,94 +160,85 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
   const progress = totalParagraphs > 0 ? (readCount / totalParagraphs) * 100 : 0;
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center gap-4">
+    <div className="animate-fade-in">
+      {/* Header */}
+      <div className="page-header">
         {onSwitchUnit && (
           <button 
             className="btn btn-secondary"
             onClick={onSwitchUnit}
           >
-            切换单元
+            ← 返回
           </button>
         )}
-        <h2 className="text-2xl font-bold font-serif">{unitName}</h2>
-      </div>
-      
-      {/* 阅读进度条 */}
-      <div className="card">
-        <h3 className="text-xl font-semibold mb-4">阅读进度</h3>
-        <div className="progress-bar">
-          <div 
-            className="progress-fill" 
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <p className="text-right text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
-          已读: {readCount} / {totalParagraphs} 段 ({Math.round(progress)}%)
-        </p>
+        <h1 className="page-title">{unitName}</h1>
       </div>
 
-      {/* 学术文章 */}
+      {/* Progress Card */}
+      <div className="card mb-6">
+        <div className="card-header">
+          <span className="card-icon">📖</span>
+          <h3 className="card-title">阅读进度</h3>
+        </div>
+        <div className="card-body">
+          <div className="progress-bar" style={{ marginBottom: 'var(--space-3)' }}>
+            <div 
+              className="progress-fill" 
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="flex justify-between" style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+            <span>已读 {readCount} / {totalParagraphs} 段</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Article */}
       <div className="card">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold">学术文章</h3>
+        <div className="card-header" style={{ justifyContent: 'space-between' }}>
+          <div className="flex items-center gap-3">
+            <span className="card-icon">📝</span>
+            <h3 className="card-title">学术文章</h3>
+          </div>
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary btn-sm"
             onClick={() => setShowTranslation(!showTranslation)}
           >
-            {showTranslation ? '隐藏中文' : '显示中文'}
+            {showTranslation ? '隐藏翻译' : '显示翻译'}
           </button>
         </div>
         
-        {/* 按篇章显示 */}
-        <div className="space-y-8">
+        <div className="card-body" style={{ marginTop: 'var(--space-4)' }}>
           {sections.map((section, sectionIndex) => (
             <div key={sectionIndex} className="article-section">
-              {/* 篇章标题 */}
-              <div className="mb-4 pb-2 border-b-2 border-blue-500">
-                <h4 className="text-lg font-bold text-blue-400">{section.title}</h4>
-                {section.subtitle && (
-                  <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{section.subtitle}</p>
-                )}
-              </div>
+              <h4 className="article-title">{section.title}</h4>
+              {section.subtitle && (
+                <p className="article-subtitle">{section.subtitle}</p>
+              )}
               
-              {/* 篇章段落 */}
-              <div className="space-y-6">
+              <div style={{ marginTop: 'var(--space-6)' }}>
                 {section.paragraphs.map((paragraph, paragraphIndex) => {
                   const isRead = readParagraphs.has(`${sectionIndex}-${paragraphIndex}`);
                   return (
                     <div 
                       key={paragraphIndex} 
-                      className="article-paragraph"
-                      style={{
-                        padding: '1rem',
-                        borderRadius: '0.5rem',
-                        backgroundColor: isRead ? 'rgba(56, 161, 105, 0.1)' : 'transparent',
-                        border: isRead ? '1px solid var(--accent-green)' : '1px solid transparent'
-                      }}
+                      className={`article-paragraph ${isRead ? 'read' : ''}`}
                     >
-                      {/* 英文段落 */}
                       <div 
-                        className="text-lg leading-relaxed mb-3"
+                        className="article-text"
                         dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.english, false) }}
                       />
-                      {/* 中文段落 - 根据开关显示 */}
                       {showTranslation && paragraph.chinese && (
                         <div 
-                          className="text-lg leading-relaxed pl-4 border-l-4 border-blue-500 mb-4"
-                          style={{ color: 'var(--text-secondary)' }}
+                          className="article-translation"
                           dangerouslySetInnerHTML={{ __html: highlightWords(paragraph.chinese, true) }}
                         />
                       )}
-                      {/* 已读完标记按钮 */}
-                      <div className="flex justify-end mt-3">
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-4)' }}>
                         <button
-                          className={`btn btn-sm ${isRead ? 'btn-secondary' : 'btn-primary'}`}
+                          className={`btn btn-sm ${isRead ? 'btn-secondary' : 'btn-success'}`}
                           onClick={() => handleToggleRead(sectionIndex, paragraphIndex)}
-                          style={{ 
-                            padding: '0.25rem 0.75rem',
-                            fontSize: '0.875rem'
-                          }}
                         >
                           {isRead ? '✓ 已读完' : '标记已读完'}
                         </button>
@@ -261,27 +252,21 @@ const ArticleReader: React.FC<ArticleReaderProps> = ({ unitId, onSwitchUnit }) =
         </div>
       </div>
 
+      {/* Word Tooltip */}
       {tooltip.visible && tooltip.word && (
         <div 
-          className="fixed rounded-lg shadow-xl border z-99999"
+          className="word-tooltip"
           style={{
-            left: `${tooltip.x + 10}px`,
+            left: `${Math.min(tooltip.x + 10, window.innerWidth - 320)}px`,
             top: `${tooltip.y + 10}px`,
-            maxWidth: '300px',
-            backgroundColor: 'rgba(43, 108, 176, 1)',
-            color: 'white',
-            padding: '0.6rem 0.8rem',
-            borderColor: 'var(--accent-blue)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
-            pointerEvents: 'none'
           }}
         >
-          <h4 className="font-semibold text-lg">{tooltip.word.english}</h4>
-          <p style={{ color: 'var(--accent-orange)', fontSize: '0.875rem' }}>{tooltip.word.phonetic}</p>
-          <p style={{ color: 'white', fontSize: '0.875rem' }}>{tooltip.word.partOfSpeech}</p>
-          <p className="mt-1" style={{ color: 'white' }}>{tooltip.word.chinese}</p>
+          <div className="word-tooltip-title">{tooltip.word.english}</div>
+          <div className="word-tooltip-phonetic">{tooltip.word.phonetic}</div>
+          <div className="word-tooltip-pos">{tooltip.word.partOfSpeech}</div>
+          <div className="word-tooltip-meaning">{tooltip.word.chinese}</div>
           {tooltip.word.example && (
-            <p className="mt-2 text-white text-sm italic">{tooltip.word.example}</p>
+            <div className="word-tooltip-example">{tooltip.word.example}</div>
           )}
         </div>
       )}

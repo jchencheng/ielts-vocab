@@ -104,9 +104,6 @@ const CustomArticleEditor: React.FC<CustomArticleEditorProps> = ({ unitId, onSav
     }
   };
 
-  // 高亮文本中的单词
-
-
   // 自动识别段落并更新sections
   useEffect(() => {
     if (fullText || fullTextChinese) {
@@ -169,32 +166,45 @@ const CustomArticleEditor: React.FC<CustomArticleEditorProps> = ({ unitId, onSav
   };
 
   if (isLoading) {
-    return <div>加载中...</div>;
+    return (
+      <div className="animate-fade-in">
+        <div className="empty-state">
+          <div className="loading-spinner" style={{ marginBottom: 'var(--space-4)' }} />
+          <p className="empty-state-description">加载中...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">自定义文章编辑</h2>
+    <div className="animate-fade-in">
+      <h1 className="page-title mb-6">自定义文章编辑</h1>
       
-      {/* 自动识别段落功能 */}
-      <div className="card p-4">
-        <h3 className="text-xl font-semibold mb-4">快速输入（自动识别段落）</h3>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">英文全文（按空行分隔段落）</label>
+      {/* Quick Input */}
+      <div className="card mb-6">
+        <div className="card-header">
+          <span className="card-icon">⚡</span>
+          <h3 className="card-title">快速输入（自动识别段落）</h3>
+        </div>
+        <div className="card-body">
+          <p className="card-description mb-4">
+            直接粘贴英文和中文全文，系统会自动按空行分隔识别段落。
+          </p>
+          <div className="form-group">
+            <label className="form-label">英文全文</label>
             <textarea
-              className="textarea textarea-primary w-full"
-              rows={10}
+              className="form-textarea"
+              rows={8}
               placeholder="输入英文全文，用空行分隔不同段落"
               value={fullText}
               onChange={(e) => setFullText(e.target.value)}
             />
           </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">中文全文（按空行分隔段落）</label>
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label">中文全文</label>
             <textarea
-              className="textarea w-full"
-              rows={8}
+              className="form-textarea"
+              rows={6}
               placeholder="输入中文全文，用空行分隔不同段落"
               value={fullTextChinese}
               onChange={(e) => setFullTextChinese(e.target.value)}
@@ -203,107 +213,126 @@ const CustomArticleEditor: React.FC<CustomArticleEditorProps> = ({ unitId, onSav
         </div>
       </div>
       
-      {/* 手动编辑模式 */}
-      <div className="card p-4">
-        <h3 className="text-xl font-semibold mb-4">手动编辑</h3>
-        {sections.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="space-y-4">
-            <div className="flex justify-between items-center">
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  className="input input-primary w-full"
-                  placeholder="章节标题"
-                  value={section.title}
-                  onChange={(e) => handleSectionTitleChange(sectionIndex, e.target.value)}
-                />
-                <input
-                  type="text"
-                  className="input w-full"
-                  placeholder="章节副标题（可选）"
-                  value={section.subtitle}
-                  onChange={(e) => handleSectionSubtitleChange(sectionIndex, e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => addParagraph(sectionIndex)}
-                >
-                  添加段落
-                </button>
-                {sections.length > 1 && (
+      {/* Manual Edit */}
+      <div className="card mb-6">
+        <div className="card-header">
+          <span className="card-icon">✏️</span>
+          <h3 className="card-title">手动编辑</h3>
+        </div>
+        <div className="card-body">
+          {sections.map((section, sectionIndex) => (
+            <div key={sectionIndex} style={{ marginBottom: 'var(--space-6)' }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'flex-start',
+                marginBottom: 'var(--space-4)',
+                paddingBottom: 'var(--space-4)',
+                borderBottom: '1px solid var(--border-light)'
+              }}>
+                <div style={{ flex: 1, marginRight: 'var(--space-4)' }}>
+                  <input
+                    type="text"
+                    className="form-input mb-3"
+                    placeholder="章节标题"
+                    value={section.title}
+                    onChange={(e) => handleSectionTitleChange(sectionIndex, e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="章节副标题（可选）"
+                    value={section.subtitle}
+                    onChange={(e) => handleSectionSubtitleChange(sectionIndex, e.target.value)}
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                   <button
-                    className="btn btn-error"
-                    onClick={() => removeSection(sectionIndex)}
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => addParagraph(sectionIndex)}
                   >
-                    删除章节
+                    + 段落
                   </button>
-                )}
+                  {sections.length > 1 && (
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => removeSection(sectionIndex)}
+                    >
+                      删除
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-            
-            {section.paragraphs.map((paragraph, paragraphIndex) => (
-              <div key={paragraphIndex} className="space-y-2 mb-4 p-3 border border-gray-200 rounded">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">英文段落</label>
-                  <div className="relative">
+              
+              {section.paragraphs.map((paragraph, paragraphIndex) => (
+                <div 
+                  key={paragraphIndex} 
+                  style={{ 
+                    marginBottom: 'var(--space-4)',
+                    padding: 'var(--space-4)',
+                    background: 'var(--bg-tertiary)',
+                    borderRadius: 'var(--radius-md)'
+                  }}
+                >
+                  <div className="form-group">
+                    <label className="form-label">英文段落 {paragraphIndex + 1}</label>
                     <textarea
-                      className="textarea textarea-primary w-full"
+                      className="form-textarea"
                       rows={4}
                       placeholder="输入英文段落"
                       value={paragraph.english}
                       onChange={(e) => handleParagraphChange(sectionIndex, paragraphIndex, 'english', e.target.value)}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">中文翻译（可选）</label>
-                  <div className="relative">
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">中文翻译（可选）</label>
                     <textarea
-                      className="textarea w-full"
+                      className="form-textarea"
                       rows={3}
                       placeholder="输入中文翻译"
                       value={paragraph.chinese}
                       onChange={(e) => handleParagraphChange(sectionIndex, paragraphIndex, 'chinese', e.target.value)}
                     />
                   </div>
+                  {section.paragraphs.length > 1 && (
+                    <div style={{ marginTop: 'var(--space-3)', textAlign: 'right' }}>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => removeParagraph(sectionIndex, paragraphIndex)}
+                      >
+                        删除段落
+                      </button>
+                    </div>
+                  )}
                 </div>
-                {section.paragraphs.length > 1 && (
-                  <button
-                    className="btn btn-error btn-sm"
-                    onClick={() => removeParagraph(sectionIndex, paragraphIndex)}
-                  >
-                    删除段落
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
-        
-        <button
-          className="btn btn-primary"
-          onClick={addSection}
-        >
-          添加章节
-        </button>
+              ))}
+            </div>
+          ))}
+          
+          <button
+            className="btn btn-secondary"
+            onClick={addSection}
+          >
+            + 添加章节
+          </button>
+        </div>
       </div>
       
-      <div className="flex space-x-4">
+      {/* Actions */}
+      <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'center' }}>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary btn-lg"
           onClick={handleSave}
           disabled={isSaving}
         >
-          {isSaving ? '保存中...' : '保存自定义文章'}
+          {isSaving ? '💾 保存中...' : '💾 保存自定义文章'}
         </button>
         <button
-          className="btn btn-error"
+          className="btn btn-danger btn-lg"
           onClick={handleDelete}
           disabled={isSaving}
         >
-          删除自定义文章
+          🗑️ 删除自定义文章
         </button>
       </div>
     </div>

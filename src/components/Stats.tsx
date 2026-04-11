@@ -38,61 +38,77 @@ const Stats: React.FC<StatsProps> = ({ unitId, onSwitchUnit }) => {
   }, [unitId]);
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center gap-4">
+    <div className="animate-fade-in">
+      {/* Header */}
+      <div className="page-header">
         {onSwitchUnit && (
           <button 
             className="btn btn-secondary"
             onClick={onSwitchUnit}
           >
-            切换单元
+            ← 返回
           </button>
         )}
-        <h2 className="text-2xl font-bold font-serif">{unitName}</h2>
+        <h1 className="page-title">{unitName}</h1>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card text-center">
-          <h3 className="text-lg font-semibold mb-2">最高分</h3>
-          <p className="text-3xl font-bold">{highestScore}</p>
+
+      {/* Stats Grid */}
+      <div className="stats-grid">
+        <div className="card stat-card">
+          <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-2)' }}>🏆</div>
+          <div className="stat-value">{highestScore}</div>
+          <div className="stat-label">最高分</div>
         </div>
-        <div className="card text-center">
-          <h3 className="text-lg font-semibold mb-2">测试次数</h3>
-          <p className="text-3xl font-bold">{testCount}</p>
+        <div className="card stat-card">
+          <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-2)' }}>📝</div>
+          <div className="stat-value">{testCount}</div>
+          <div className="stat-label">测试次数</div>
         </div>
-        <div className="card text-center">
-          <h3 className="text-lg font-semibold mb-2">平均分</h3>
-          <p className="text-3xl font-bold">{averageScore.toFixed(1)}</p>
+        <div className="card stat-card">
+          <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-2)' }}>📊</div>
+          <div className="stat-value">{averageScore.toFixed(1)}</div>
+          <div className="stat-label">平均分</div>
         </div>
       </div>
 
+      {/* History */}
       <div className="card">
-        <h3 className="text-xl font-semibold mb-4">测试历史</h3>
-        {testResults.length === 0 ? (
-          <p style={{ color: 'var(--text-secondary)' }}>暂无测试记录</p>
-        ) : (
-          <div className="space-y-4">
-            {testResults.map((result, index) => {
-              const date = new Date(result.date).toLocaleString();
-              const percentage = (result.score / result.total * 100).toFixed(0);
-              return (
-                <div key={index} className="flex justify-between items-center p-4" style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '0.5rem' }}>
-                  <div>
-                    <p className="font-semibold">{date}</p>
-                    <p style={{ color: 'var(--text-secondary)' }}>{result.score} / {result.total} ({percentage}%)</p>
-                  </div>
-                  <div className="w-1/2">
-                    <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '1rem', height: '0.5rem' }}>
+        <div className="card-header">
+          <span className="card-icon">📈</span>
+          <h3 className="card-title">测试历史</h3>
+        </div>
+        <div className="card-body">
+          {testResults.length === 0 ? (
+            <div className="empty-state" style={{ padding: 'var(--space-8)' }}>
+              <div className="empty-state-icon">📭</div>
+              <h4 className="empty-state-title">暂无测试记录</h4>
+              <p className="empty-state-description">完成单元测试后，您的测试记录将显示在这里</p>
+            </div>
+          ) : (
+            <div className="history-list">
+              {testResults.map((result, index) => {
+                const date = new Date(result.date).toLocaleString('zh-CN');
+                const percentage = (result.score / result.total * 100);
+                return (
+                  <div key={index} className="history-item">
+                    <div className="history-info">
+                      <div className="history-date">{date}</div>
+                      <div className="history-score">
+                        {result.score} / {result.total} ({percentage.toFixed(0)}%)
+                      </div>
+                    </div>
+                    <div className="history-bar">
                       <div 
-                        style={{ backgroundColor: 'var(--accent-blue)', height: '0.5rem', borderRadius: '1rem', transition: 'all 0.3s ease', width: `${percentage}%` }}
+                        className="history-bar-fill"
+                        style={{ width: `${percentage}%` }}
                       />
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -153,55 +153,67 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
 
   if (words.length === 0) {
     return (
-      <div className="card text-center p-8">
-        <h3 className="text-xl font-bold mb-4">错题本为空</h3>
-        <p className="text-gray-600 mb-6">当你在测试中回答错误或选择"忘了"时，单词会自动添加到错题本中</p>
-        {onBackToWrongWords && (
-          <button
-            className="btn btn-primary"
-            onClick={onBackToWrongWords}
-          >
-            返回错题本
-          </button>
-        )}
+      <div className="animate-fade-in">
+        <div className="card">
+          <div className="empty-state">
+            <div className="empty-state-icon">📭</div>
+            <h4 className="empty-state-title">错题本为空</h4>
+            <p className="empty-state-description mb-6">
+              当你在测试中回答错误或选择"忘了"时，单词会自动添加到错题本中
+            </p>
+            {onBackToWrongWords && (
+              <button
+                className="btn btn-primary"
+                onClick={onBackToWrongWords}
+              >
+                ← 返回错题本
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
 
   if (showResult) {
     const finalScore = score + (isCorrect ? 1 : 0);
+    const percentage = Math.round((finalScore / words.length) * 100);
     return (
-      <div className="space-y-8">
-        <div className="flex items-center gap-4">
+      <div className="animate-fade-in">
+        <div className="page-header">
           {onSwitchUnit && (
             <button 
               className="btn btn-secondary"
               onClick={onSwitchUnit}
             >
-              返回
+              ← 返回
             </button>
           )}
-          <h2 className="text-2xl font-bold font-serif">错题本测试</h2>
+          <h1 className="page-title">错题本测试</h1>
         </div>
-        <div className="card text-center">
-          <h3 className="text-3xl font-bold mb-4">测试完成！</h3>
-          <p className="text-xl mb-2">你的得分：{finalScore} / {words.length}</p>
-          <p className="text-gray-600 mb-6">正确率：{(finalScore / words.length * 100).toFixed(0)}%</p>
-          <div className="space-y-4">
-            <button 
-              className="btn btn-primary"
-              onClick={handleRestart}
-            >
-              重新测试
-            </button>
-            {onBackToWrongWords && (
+
+        <div className="test-container">
+          <div className="card test-result">
+            <div style={{ fontSize: '4rem', marginBottom: 'var(--space-4)' }}>🎉</div>
+            <h2 className="test-score">{finalScore} <span style={{ fontSize: '1.5rem', color: 'var(--text-secondary)' }}>/ {words.length}</span></h2>
+            <p className="test-score-label">正确率 {percentage}%</p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginTop: 'var(--space-6)' }}>
               <button 
-                className="btn btn-secondary"
-                onClick={onBackToWrongWords}
+                className="btn btn-primary btn-lg btn-full"
+                onClick={handleRestart}
               >
-                返回错题本
+                🔄 重新测试
               </button>
-            )}
+              {onBackToWrongWords && (
+                <button 
+                  className="btn btn-secondary btn-full"
+                  onClick={onBackToWrongWords}
+                >
+                  ← 返回错题本
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -212,14 +224,14 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
   const progress = (currentIndex + 1) / words.length * 100;
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center gap-4">
+    <div className="animate-fade-in">
+      <div className="page-header">
         {onSwitchUnit && (
           <button 
             className="btn btn-secondary"
             onClick={onSwitchUnit}
           >
-            切换单元
+            ← 返回
           </button>
         )}
         {onBackToWrongWords && (
@@ -227,64 +239,78 @@ const WrongWordsTest: React.FC<WrongWordsTestProps> = ({ onSwitchUnit, onBackToW
             className="btn btn-secondary"
             onClick={onBackToWrongWords}
           >
-            返回错题本
+            ← 返回错题本
           </button>
         )}
-        <h2 className="text-2xl font-bold font-serif">错题本测试</h2>
+        <h1 className="page-title">错题本测试</h1>
       </div>
-      
-      {/* 进度条 */}
-      <div className="progress-bar">
-        <div 
-          className="progress-fill"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-      <p className="text-gray-600">问题 {currentIndex + 1} / {words.length}</p>
 
-      <div className="card">
-        <h3 className="text-2xl font-semibold mb-2">{currentWord.english}</h3>
-        <p className="text-gray-500 mb-6">{currentWord.phonetic}</p>
-        
-        {!isAnswered && remembered === null ? (
-          <div className="space-y-4">
-            <button
-              className="btn btn-success w-full"
-              onClick={() => handleRemember(true)}
-            >
-              记得
-            </button>
-            <button
-              className="btn btn-danger w-full"
-              onClick={() => handleRemember(false)}
-            >
-              忘了
-            </button>
+      <div className="test-container">
+        {/* Progress */}
+        <div className="card" style={{ padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
+          <div className="flex justify-between" style={{ marginBottom: 'var(--space-2)', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+            <span>问题 {currentIndex + 1} / {words.length}</span>
+            <span>得分: {score}</span>
           </div>
-        ) : !isAnswered && remembered === true ? (
-          <div className="space-y-4">
-            {options.map((option, index) => (
+          <div className="progress-bar">
+            <div 
+              className="progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Question Card */}
+        <div className="card test-card">
+          <div className="test-word">{currentWord.english}</div>
+          <div className="test-phonetic">{currentWord.phonetic}</div>
+          
+          {!isAnswered && remembered === null ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               <button
-                key={index}
-                className={`btn w-full text-left ${selectedAnswer === option ? (isCorrect ? 'btn-success' : 'btn-danger') : 'btn-secondary'}`}
-                onClick={() => handleAnswer(option)}
-                disabled={isAnswered}
+                className="btn btn-success btn-lg btn-full"
+                onClick={() => handleRemember(true)}
               >
-                {option}
+                ✓ 记得
               </button>
-            ))}
-          </div>
-        ) : isAnswered && !isCorrect ? (
-          <div className="mt-4">
-            <p className="text-red-500 mb-2">{remembered === false ? '你选择了"忘了"' : '回答错误'}</p>
-            <p className="text-gray-800">正确答案：<span className="font-semibold">{currentWord.chinese}</span></p>
-          </div>
-        ) : isAnswered && isCorrect ? (
-          <div className="mt-4">
-            <p className="text-green-500 mb-2">回答正确！</p>
-            <p className="text-gray-800">释义：<span className="font-semibold">{currentWord.chinese}</span></p>
-          </div>
-        ) : null}
+              <button
+                className="btn btn-secondary btn-lg btn-full"
+                onClick={() => handleRemember(false)}
+              >
+                ✗ 忘了
+              </button>
+            </div>
+          ) : !isAnswered && remembered === true ? (
+            <div className="test-options">
+              {options.map((option, index) => (
+                <button
+                  key={index}
+                  className={`btn test-option ${selectedAnswer === option ? (isCorrect ? 'btn-success' : 'btn-danger') : 'btn-secondary'}`}
+                  onClick={() => handleAnswer(option)}
+                  disabled={isAnswered}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          ) : isAnswered && !isCorrect ? (
+            <div style={{ textAlign: 'center', padding: 'var(--space-4)' }}>
+              <p style={{ color: 'var(--color-error)', marginBottom: 'var(--space-2)' }}>
+                {remembered === false ? '你选择了"忘了"' : '回答错误'}
+              </p>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                正确答案：<span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{currentWord.chinese}</span>
+              </p>
+            </div>
+          ) : isAnswered && isCorrect ? (
+            <div style={{ textAlign: 'center', padding: 'var(--space-4)' }}>
+              <p style={{ color: 'var(--color-success)', marginBottom: 'var(--space-2)' }}>回答正确！</p>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                释义：<span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{currentWord.chinese}</span>
+              </p>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );

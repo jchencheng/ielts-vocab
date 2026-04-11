@@ -80,38 +80,50 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
   const studyWordsCount = totalWords - easyWordsCount;
 
   return (
-    <div>
-      <div className="flex items-center gap-4 mb-6">
+    <div className="animate-fade-in">
+      {/* Header */}
+      <div className="page-header">
         {onSwitchUnit && (
           <button 
             className="btn btn-secondary"
             onClick={onSwitchUnit}
           >
-            切换单元
+            ← 返回
           </button>
         )}
-        <h2 className="text-2xl font-bold">{unitName}</h2>
+        <h1 className="page-title">{unitName}</h1>
       </div>
-      
-      <div className="mb-6 p-4 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-lg">
-              本单元共 <span className="font-bold text-blue-400">{totalWords}</span> 个单词
-            </p>
-            <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-              需学习: <span className="font-bold text-green-400">{studyWordsCount}</span> | 
-              已标记太简单: <span className="font-bold text-yellow-400">{easyWordsCount}</span>
-            </p>
+
+      {/* Stats Card */}
+      <div className="card mb-6">
+        <div className="card-header">
+          <span className="card-icon">📊</span>
+          <h3 className="card-title">学习统计</h3>
+        </div>
+        <div className="card-body">
+          <div className="stats-grid" style={{ marginBottom: 0 }}>
+            <div className="stat-card" style={{ padding: 'var(--space-4)', boxShadow: 'none', border: '1px solid var(--border-light)' }}>
+              <span className="stat-value">{totalWords}</span>
+              <span className="stat-label">总单词数</span>
+            </div>
+            <div className="stat-card" style={{ padding: 'var(--space-4)', boxShadow: 'none', border: '1px solid var(--border-light)' }}>
+              <span className="stat-value" style={{ color: 'var(--color-success)' }}>{studyWordsCount}</span>
+              <span className="stat-label">需学习</span>
+            </div>
+            <div className="stat-card" style={{ padding: 'var(--space-4)', boxShadow: 'none', border: '1px solid var(--border-light)' }}>
+              <span className="stat-value" style={{ color: 'var(--color-warning)' }}>{easyWordsCount}</span>
+              <span className="stat-label">已标记简单</span>
+            </div>
           </div>
         </div>
       </div>
-      
-      <div className="word-list">
-        <div className="word-item" style={{ backgroundColor: 'var(--bg-tertiary)', fontWeight: 'bold' }}>
-          <div style={{ width: '30%' }}>单词</div>
-          <div style={{ width: '50%' }}>释义</div>
-          <div style={{ width: '20%', textAlign: 'center' }}>操作</div>
+
+      {/* Word List */}
+      <div className="card">
+        <div className="word-list-header">
+          <div>单词</div>
+          <div>释义</div>
+          <div style={{ textAlign: 'right' }}>操作</div>
         </div>
         {words.map((word) => {
           const isTooEasy = easyWordIds.has(word.id);
@@ -119,13 +131,12 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
           return (
             <div 
               key={word.id} 
-              className="word-item"
+              className="word-list-item"
               style={{ 
                 opacity: isTooEasy ? 0.6 : 1,
-                backgroundColor: isTooEasy ? 'var(--bg-secondary)' : 'transparent'
               }}
             >
-              <div style={{ width: '30%' }}>
+              <div>
                 <div className="word-english" style={{ textDecoration: isTooEasy ? 'line-through' : 'none' }}>
                   {word.english}
                 </div>
@@ -133,31 +144,23 @@ const WordPreview: React.FC<WordPreviewProps> = ({ unitId, onSwitchUnit }) => {
                   <div className="word-phonetic">{word.phonetic}</div>
                 )}
               </div>
-              <div className="word-chinese" style={{ width: '50%' }}>
+              <div className="word-chinese">
                 {word.chinese}
               </div>
-              <div style={{ width: '20%', textAlign: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <div className="word-actions">
                 <button
                   className={`btn btn-sm ${isTooEasy ? 'btn-secondary' : 'btn-primary'}`}
                   onClick={() => handleToggleTooEasy(word.id)}
-                  style={{ 
-                    padding: '0.25rem 0.5rem',
-                    fontSize: '0.75rem',
-                    whiteSpace: 'nowrap'
-                  }}
+                  title={isTooEasy ? '取消标记' : '标记为太简单'}
                 >
-                  {isTooEasy ? '取消标记' : '太简单'}
+                  {isTooEasy ? '取消' : '太简单'}
                 </button>
                 <button
-                  className={`btn btn-sm ${isWrongWord ? 'btn-danger' : 'btn-warning'}`}
+                  className={`btn btn-sm ${isWrongWord ? 'btn-danger' : 'btn-secondary'}`}
                   onClick={() => handleToggleWrongWord(word)}
-                  style={{ 
-                    padding: '0.25rem 0.5rem',
-                    fontSize: '0.75rem',
-                    whiteSpace: 'nowrap'
-                  }}
+                  title={isWrongWord ? '从错题本移除' : '加入错题本'}
                 >
-                  {isWrongWord ? '移出错题' : '加入错题'}
+                  {isWrongWord ? '移除' : '错题'}
                 </button>
               </div>
             </div>

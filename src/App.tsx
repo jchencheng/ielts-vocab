@@ -144,55 +144,206 @@ function App() {
     }
   }
 
-  // 单元选择页面
-  if (!hasSelectedUnit) {
-    // 如果用户点击了错题本按钮，显示错题本页面
-    if (showWrongWords) {
-      return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-          {/* Header */}
-          <header className="navbar">
-            <div className="navbar-container">
-              <a href="#" className="navbar-logo" onClick={() => {
-                setHasSelectedUnit(false);
-                setShowWrongWords(false);
-                setShowWrongWordsTest(false);
-                setActiveTab('preview');
-              }}>IELTS 单词记忆</a>
-              <div className="top-nav-actions">
-                <button
-                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-                  onClick={() => {
-                    setShowWrongWords(true)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  错题本
-                </button>
-                <button
-                  className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveTab('settings')
-                    setShowWrongWords(false)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  设置
-                </button>
-                <button
-                  className="theme-toggle-btn"
-                  onClick={toggleDarkMode}
-                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
-                >
-                  {isDarkMode ? '☀️' : '🌙'}
-                </button>
+  // 导航栏组件
+  const Navbar = () => (
+    <header className="navbar">
+      <div className="navbar-container">
+        <a href="#" className="navbar-logo" onClick={() => {
+          setHasSelectedUnit(false)
+          setShowWrongWords(false)
+          setShowWrongWordsTest(false)
+          setActiveTab('preview')
+        }}>
+          📚 IELTS Vocabulary
+        </a>
+        <nav className="navbar-nav">
+          <button
+            className={`nav-link ${showWrongWords ? 'active' : ''}`}
+            onClick={() => {
+              setShowWrongWords(true)
+              setShowWrongWordsTest(false)
+              setHasSelectedUnit(false)
+            }}
+          >
+            错题本
+          </button>
+          <button
+            className={`nav-link ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab('settings')
+              setShowWrongWords(false)
+              setShowWrongWordsTest(false)
+              setHasSelectedUnit(false)
+            }}
+          >
+            设置
+          </button>
+          <button
+            className="theme-toggle"
+            onClick={toggleDarkMode}
+            title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
+        </nav>
+      </div>
+    </header>
+  )
+
+  // 学习页面导航
+  const StudyNavbar = () => (
+    <>
+      <header className="navbar" style={{ zIndex: 1001 }}>
+        <div className="navbar-container">
+          <a href="#" className="navbar-logo" onClick={handleBackToUnits}>
+            ← 返回单元列表
+          </a>
+          <nav className="navbar-nav">
+            <button
+              className={`nav-link ${showWrongWords ? 'active' : ''}`}
+              onClick={() => {
+                setShowWrongWords(true)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              错题本
+            </button>
+            <button
+              className={`nav-link ${activeTab === 'settings' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveTab('settings')
+                setShowWrongWords(false)
+                setShowWrongWordsTest(false)
+              }}
+            >
+              设置
+            </button>
+            <button
+              className="theme-toggle"
+              onClick={toggleDarkMode}
+              title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
+            >
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
+          </nav>
+        </div>
+      </header>
+      <nav className="study-nav">
+        <div className="study-nav-container">
+          <div className="study-nav-links">
+            {[
+              { id: 'preview', label: '单词预习', icon: '📖' },
+              { id: 'article', label: '文章阅读', icon: '📄' },
+              { id: 'test', label: '单元测试', icon: '✏️' },
+              { id: 'stats', label: '学习统计', icon: '📊' },
+              { id: 'custom-article', label: '自定义文章', icon: '✍️' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                className={`study-nav-link ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveTab(tab.id)
+                  setShowWrongWords(false)
+                  setShowWrongWordsTest(false)
+                }}
+              >
+                <span className="study-nav-icon">{tab.icon}</span>
+                <span className="study-nav-label">{tab.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </>
+  )
+
+  // 页脚组件
+  const Footer = () => (
+    <footer className="footer">
+      <div className="container">
+        <p className="footer-text">
+          IELTS Vocabulary Learning App © {new Date().getFullYear()}
+        </p>
+      </div>
+    </footer>
+  )
+
+  // 设置页面
+  const SettingsPage = () => (
+    <div className="page-content">
+      <div className="page-header">
+        <button 
+          className="btn btn-secondary"
+          onClick={() => {
+            setActiveTab('preview')
+            setShowWrongWords(false)
+            setShowWrongWordsTest(false)
+          }}
+        >
+          ← 返回
+        </button>
+        <h1 className="page-title">设置</h1>
+      </div>
+      
+      <div className="settings-grid">
+        <div className="card">
+          <div className="card-header">
+            <span className="card-icon">💾</span>
+            <h3 className="card-title">数据管理</h3>
+          </div>
+          <div className="card-body">
+            <p className="card-description">导出或导入您的学习数据，方便在不同设备间同步。</p>
+            <div className="settings-actions">
+              <button 
+                className="btn btn-primary btn-full"
+                onClick={handleExportData}
+              >
+                📥 导出数据
+              </button>
+              <div className="form-group">
+                <label className="form-label">导入数据</label>
+                <input 
+                  type="file" 
+                  accept=".json" 
+                  onChange={handleImportData}
+                  className="form-input"
+                />
               </div>
             </div>
-          </header>
+          </div>
+        </div>
 
-          {/* Wrong Words Page */}
-          <div className="page-container">
-            <div className="content-card">
+        <div className="card">
+          <div className="card-header">
+            <span className="card-icon">🎨</span>
+            <h3 className="card-title">外观设置</h3>
+          </div>
+          <div className="card-body">
+            <p className="card-description">自定义应用的外观和主题。</p>
+            <div className="settings-row">
+              <span>深色模式</span>
+              <button
+                className="theme-toggle"
+                onClick={toggleDarkMode}
+              >
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  // 单元选择页面
+  if (!hasSelectedUnit) {
+    // 错题本页面
+    if (showWrongWords) {
+      return (
+        <div className="app">
+          <Navbar />
+          <main className="main-content">
+            <div className="container">
               <WrongWords 
                 onSwitchUnit={() => {
                   setShowWrongWords(false)
@@ -205,65 +356,19 @@ function App() {
                 }}
               />
             </div>
-          </div>
-
-          {/* Footer */}
-          <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
-              <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
-            </div>
-          </footer>
+          </main>
+          <Footer />
         </div>
       )
     }
 
-    // 如果用户点击了错题本测试按钮，显示错题本测试页面
+    // 错题本测试页面
     if (showWrongWordsTest) {
       return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-          {/* Header */}
-          <header className="navbar">
-            <div className="navbar-container">
-              <a href="#" className="navbar-logo" onClick={() => {
-                setHasSelectedUnit(false);
-                setShowWrongWords(false);
-                setShowWrongWordsTest(false);
-                setActiveTab('preview');
-              }}>IELTS 单词记忆</a>
-              <div className="top-nav-actions">
-                <button
-                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-                  onClick={() => {
-                    setShowWrongWords(true)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  错题本
-                </button>
-                <button
-                  className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveTab('settings')
-                    setShowWrongWords(false)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  设置
-                </button>
-                <button
-                  className="theme-toggle-btn"
-                  onClick={toggleDarkMode}
-                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
-                >
-                  {isDarkMode ? '☀️' : '🌙'}
-                </button>
-              </div>
-            </div>
-          </header>
-
-          {/* Wrong Words Test Page */}
-          <div className="page-container">
-            <div className="content-card">
+        <div className="app">
+          <Navbar />
+          <main className="main-content">
+            <div className="container">
               <WrongWordsTest 
                 onSwitchUnit={() => {
                   setShowWrongWords(false)
@@ -276,167 +381,48 @@ function App() {
                 }}
               />
             </div>
-          </div>
-
-          {/* Footer */}
-          <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
-              <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
-            </div>
-          </footer>
+          </main>
+          <Footer />
         </div>
       )
     }
 
-    // 如果用户点击了设置按钮，显示设置页面
+    // 设置页面
     if (activeTab === 'settings') {
       return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-          {/* Header */}
-          <header className="navbar">
-            <div className="navbar-container">
-              <a href="#" className="navbar-logo" onClick={() => {
-                setHasSelectedUnit(false);
-                setShowWrongWords(false);
-                setShowWrongWordsTest(false);
-                setActiveTab('preview');
-              }}>IELTS 单词记忆</a>
-              <div className="top-nav-actions">
-                <button
-                  className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-                  onClick={() => {
-                    setShowWrongWords(true)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  错题本
-                </button>
-                <button
-                  className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveTab('settings')
-                    setShowWrongWords(false)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  设置
-                </button>
-                <button
-                  className="theme-toggle-btn"
-                  onClick={toggleDarkMode}
-                  title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
-                >
-                  {isDarkMode ? '☀️' : '🌙'}
-                </button>
-              </div>
+        <div className="app">
+          <Navbar />
+          <main className="main-content">
+            <div className="container">
+              <SettingsPage />
             </div>
-          </header>
-
-          {/* Settings Page */}
-          <div className="page-container">
-            <div className="content-card">
-              <div className="flex items-center gap-4 mb-6">
-                <button 
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    setActiveTab('preview')
-                    setShowWrongWords(false)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  返回
-                </button>
-                <h2 className="text-2xl font-bold">设置</h2>
-              </div>
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4">数据管理</h3>
-                  <div className="space-y-4">
-                    <button 
-                      className="btn btn-primary w-full"
-                      onClick={handleExportData}
-                    >
-                      导出数据
-                    </button>
-                    <div>
-                      <label className="block mb-2">导入数据</label>
-                      <input 
-                        type="file" 
-                        accept=".json" 
-                        onChange={handleImportData}
-                        className="form-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-            <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
-              <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
-            </div>
-          </footer>
+          </main>
+          <Footer />
         </div>
       )
     }
 
-    // 否则显示单元选择页面
+    // 单元选择主页
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-        {/* Header */}
-        <header className="navbar">
-          <div className="navbar-container">
-            <a href="#" className="navbar-logo">IELTS 单词记忆</a>
-            <div className="top-nav-actions">
-              <button
-                className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-                onClick={() => {
-                  setShowWrongWords(true)
-                  setShowWrongWordsTest(false)
-                }}
-              >
-                错题本
-              </button>
-              <button
-                className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-                onClick={() => setActiveTab('settings')}
-              >
-                设置
-              </button>
-              <button
-                className="theme-toggle-btn"
-                onClick={toggleDarkMode}
-                title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
-              >
-                {isDarkMode ? '☀️' : '🌙'}
-              </button>
-            </div>
-          </div>
-        </header>
+      <div className="app">
+        <Navbar />
+        <main className="main-content">
+          <div className="container">
+            {/* Hero Section */}
+            <section className="hero">
+              <h1 className="hero-title">开启您的雅思词汇学习之旅</h1>
+              <p className="hero-subtitle">
+                共 {units.length} 个学习单元，每个单元包含 {units[0]?.words?.length || 0} 个精选词汇
+              </p>
+            </section>
 
-        {/* Unit Selection Page */}
-        <div className="page-container">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4">选择学习单元</h1>
-            <p className="text-lg" style={{ color: 'var(--text-primary)' }}>
-              共有 {units.length} 个单元，每个单元包含约 {units[0]?.words?.length || 0} 个单词
-            </p>
-          </div>
-
-          {/* 总体学习进度 */}
-          {overallProgress && (
-            <div className="mb-8">
-              <div className="content-card" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <h3 className="text-xl font-semibold mb-4">总体学习进度</h3>
-                
-                {/* 总体进度条 */}
-                <div className="mb-4">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium">总进度</span>
-                    <span className="text-sm font-medium">{Math.round(overallProgress.overallProgress)}%</span>
+            {/* Overall Progress */}
+            {overallProgress && (
+              <section className="progress-section">
+                <div className="card progress-card">
+                  <div className="progress-card-header">
+                    <h2 className="progress-card-title">总体学习进度</h2>
+                    <span className="progress-percentage">{Math.round(overallProgress.overallProgress)}%</span>
                   </div>
                   <div className="progress-bar">
                     <div 
@@ -444,308 +430,104 @@ function App() {
                       style={{ width: `${overallProgress.overallProgress}%` }}
                     />
                   </div>
-                </div>
-                
-                {/* 详细统计 - 单行显示，响应式适配 */}
-                <div className="flex flex-wrap justify-between gap-2 mt-4">
-                  {/* 单词进度 */}
-                  <div className="flex-1 min-w-[100px] p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                    <div className="text-center">
-                      <span className="text-xs block mb-1" style={{ color: 'var(--text-secondary)' }}>单词掌握</span>
-                      <span className="text-lg font-bold">{Math.round(overallProgress.wordsProgress)}%</span>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-                        {overallProgress.studiedWords}/{overallProgress.totalWords}
-                      </p>
+                  <div className="progress-stats">
+                    <div className="progress-stat">
+                      <span className="progress-stat-value">{Math.round(overallProgress.wordsProgress)}%</span>
+                      <span className="progress-stat-label">单词掌握</span>
+                      <span className="progress-stat-detail">{overallProgress.studiedWords}/{overallProgress.totalWords}</span>
                     </div>
-                  </div>
-                  
-                  {/* 阅读进度 */}
-                  <div className="flex-1 min-w-[100px] p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                    <div className="text-center">
-                      <span className="text-xs block mb-1" style={{ color: 'var(--text-secondary)' }}>文章阅读</span>
-                      <span className="text-lg font-bold">{Math.round(overallProgress.readingProgress)}%</span>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-                        {overallProgress.readParagraphs}/{overallProgress.totalParagraphs}
-                      </p>
+                    <div className="progress-stat">
+                      <span className="progress-stat-value">{Math.round(overallProgress.readingProgress)}%</span>
+                      <span className="progress-stat-label">文章阅读</span>
+                      <span className="progress-stat-detail">{overallProgress.readParagraphs}/{overallProgress.totalParagraphs}</span>
                     </div>
-                  </div>
-                  
-                  {/* 测试进度 */}
-                  <div className="flex-1 min-w-[100px] p-3 rounded" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                    <div className="text-center">
-                      <span className="text-xs block mb-1" style={{ color: 'var(--text-secondary)' }}>单元测试</span>
-                      <span className="text-lg font-bold">{Math.round(overallProgress.testProgress)}%</span>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-                        {overallProgress.completedTests}/{overallProgress.totalUnits}
-                      </p>
+                    <div className="progress-stat">
+                      <span className="progress-stat-value">{Math.round(overallProgress.testProgress)}%</span>
+                      <span className="progress-stat-label">单元测试</span>
+                      <span className="progress-stat-detail">{overallProgress.completedTests}/{overallProgress.totalUnits}</span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
+              </section>
+            )}
 
-          {/* 上次学习进度 */}
-          {lastProgress && (
-            <div className="mb-8">
-              <div 
-                className="content-card cursor-pointer hover:opacity-90 transition-opacity"
-                style={{ 
-                  backgroundColor: 'var(--accent-blue)', 
-                  border: '2px solid var(--accent-blue-hover)',
-                  position: 'relative'
-                }}
-                onClick={() => {
-                  setCurrentUnitIdState(lastProgress.unitId)
-                  setCurrentUnit(lastProgress.unitId)
-                  setActiveTab(lastProgress.activeTab)
-                  setHasSelectedUnit(true)
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">继续上次学习</h3>
-                    <p className="text-sm opacity-90">
-                      单元: {lastProgress.unitName}
-                    </p>
-                    <p className="text-sm opacity-90">
-                      上次学习: {new Date(lastProgress.lastLearningTime).toLocaleString('zh-CN')}
-                    </p>
-                    <p className="text-sm opacity-90">
-                      进度: {lastProgress.activeTab === 'preview' ? '单词预习' : 
-                             lastProgress.activeTab === 'article' ? '文章阅读' : 
-                             lastProgress.activeTab === 'test' ? '单元测试' : 
-                             lastProgress.activeTab === 'stats' ? '学习统计' : '单词预习'}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <span className="btn" style={{ backgroundColor: 'white', color: 'var(--accent-blue)' }}>
-                      继续学习 →
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {units.map((unit) => (
-              <div
-                key={unit.id}
-                className="unit-card"
-                onClick={() => handleUnitChange(unit.id)}
-              >
-                <div className="unit-card-header">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-semibold flex-1">{unit.name}</h3>
-                    {isUnitCompleted(unit.id) && (
-                      <span className="ml-2 text-2xl" style={{ color: 'var(--accent-green)' }}>
-                        ✅
+            {/* Continue Learning */}
+            {lastProgress && (
+              <section className="continue-section">
+                <div 
+                  className="card continue-card"
+                  onClick={() => {
+                    setCurrentUnitIdState(lastProgress.unitId)
+                    setCurrentUnit(lastProgress.unitId)
+                    setActiveTab(lastProgress.activeTab)
+                    setHasSelectedUnit(true)
+                  }}
+                >
+                  <div className="continue-content">
+                    <div className="continue-icon">🎯</div>
+                    <div className="continue-info">
+                      <h3 className="continue-title">继续上次学习</h3>
+                      <p className="continue-unit">{lastProgress.unitName}</p>
+                      <p className="continue-time">
+                        上次学习: {new Date(lastProgress.lastLearningTime).toLocaleString('zh-CN')}
+                      </p>
+                      <span className="continue-badge">
+                        {lastProgress.activeTab === 'preview' ? '📖 单词预习' : 
+                         lastProgress.activeTab === 'article' ? '📄 文章阅读' : 
+                         lastProgress.activeTab === 'test' ? '✏️ 单元测试' : 
+                         lastProgress.activeTab === 'stats' ? '📊 学习统计' : '📖 单词预习'}
                       </span>
-                    )}
+                    </div>
+                    <button className="btn btn-primary continue-btn">
+                      继续学习 →
+                    </button>
                   </div>
                 </div>
-                <div className="unit-card-body">
-                  <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
-                    单词数量: {unit.words?.length || 0}
-                  </p>
-                  <div className="mt-4">
-                    <span className="btn btn-primary">
-                      {isUnitCompleted(unit.id) ? '继续学习' : '开始学习'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              </section>
+            )}
 
-        {/* Footer */}
-        <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-          <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
-            <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
+            {/* Unit Grid */}
+            <section className="units-section">
+              <h2 className="section-title">选择学习单元</h2>
+              <div className="units-grid">
+                {units.map((unit, index) => (
+                  <div
+                    key={unit.id}
+                    className="unit-card"
+                    onClick={() => handleUnitChange(unit.id)}
+                  >
+                    <div className="unit-card-header">
+                      <span className="unit-number">Unit {index + 1}</span>
+                      {isUnitCompleted(unit.id) && (
+                        <span className="unit-completed">✓</span>
+                      )}
+                    </div>
+                    <div className="unit-card-body">
+                      <h3 className="unit-name">{unit.name}</h3>
+                      <p className="unit-words">{unit.words?.length || 0} 个单词</p>
+                    </div>
+                    <div className="unit-card-footer">
+                      <span className="unit-action">
+                        {isUnitCompleted(unit.id) ? '继续学习 →' : '开始学习 →'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
-        </footer>
+        </main>
+        <Footer />
       </div>
     )
   }
 
   // 学习页面
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
-      {/* Top Navigation Bar */}
-      <nav className="navbar-top">
-        <div className="navbar-container">
-          <a href="#" className="navbar-logo" onClick={handleBackToUnits}>IELTS 单词记忆</a>
-          <div className="top-nav-actions">
-            <button
-              className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-              onClick={() => {
-                setShowWrongWords(true)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              错题本
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('settings')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              设置
-            </button>
-            <button
-              className="theme-toggle-btn"
-              onClick={toggleDarkMode}
-              title={isDarkMode ? '切换到浅色模式' : '切换到深色模式'}
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </button>
-          </div>
-        </div>
-      </nav>
-      
-      {/* Main Navigation Bar */}
-      <nav className="navbar-main">
-        <div className="navbar-container">
-          <div className="main-nav-links">
-            <button
-              className={`navbar-link ${activeTab === 'preview' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('preview')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              预习
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'article' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('article')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              学习
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'test' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('test')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              测试
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'stats' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('stats')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              统计
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'custom-article' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('custom-article')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              自定义文章
-            </button>
-          </div>
-        </div>
-      </nav>
-      
-      {/* Mobile Navigation */}
-      <nav className="navbar-mobile">
-        <div className="navbar-container">
-          <div className="mobile-nav-links">
-            <button
-              className={`navbar-link ${activeTab === 'preview' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('preview')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              预习
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'article' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('article')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              学习
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'test' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('test')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              测试
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'stats' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('stats')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              统计
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'custom-article' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('custom-article')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              自定义文章
-            </button>
-            <button
-              className={`navbar-link ${showWrongWords ? 'active' : ''}`}
-              onClick={() => {
-                setShowWrongWords(true)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              错题本
-            </button>
-            <button
-              className={`navbar-link ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('settings')
-                setShowWrongWords(false)
-                setShowWrongWordsTest(false)
-              }}
-            >
-              设置
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="page-container">
-        <div className="content-card">
+    <div className="app">
+      <StudyNavbar />
+      <main className="main-content study-content">
+        <div className="container">
           {showWrongWordsTest ? (
             <WrongWordsTest 
               onSwitchUnit={() => {
@@ -795,58 +577,15 @@ function App() {
             <CustomArticleEditor 
               unitId={currentUnitId} 
               onSave={() => {
-                // 保存成功后，切换到学习标签页，以便查看自定义文章
                 setActiveTab('article')
               }}
             />
           ) : activeTab === 'settings' ? (
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <button 
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    setActiveTab('preview')
-                    setShowWrongWords(false)
-                    setShowWrongWordsTest(false)
-                  }}
-                >
-                  返回
-                </button>
-                <h2 className="text-2xl font-bold">设置</h2>
-              </div>
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4">数据管理</h3>
-                  <div className="space-y-4">
-                    <button 
-                      className="btn btn-primary w-full"
-                      onClick={handleExportData}
-                    >
-                      导出数据
-                    </button>
-                    <div>
-                      <label className="block mb-2">导入数据</label>
-                      <input 
-                        type="file" 
-                        accept=".json" 
-                        onChange={handleImportData}
-                        className="form-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SettingsPage />
           ) : null}
         </div>
-      </div>
-
-      {/* Footer */}
-      <footer style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem 0', marginTop: 'auto' }}>
-        <div className="max-w-6xl mx-auto text-center" style={{ color: 'var(--text-primary)' }}>
-          <p>IELTS 单词记忆应用 © {new Date().getFullYear()}</p>
-        </div>
-      </footer>
+      </main>
+      <Footer />
     </div>
   )
 }
