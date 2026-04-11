@@ -142,27 +142,13 @@ const migrateData = (oldData: any): UserData => {
     };
   }
 
-  // 迁移每个单元的数据
-  const migratedUnits = oldData.units.map((oldUnit: any, index: number) => {
-    // 使用当前默认数据中的对应单元作为基础
-    const defaultUnit = processedUnits[index] || processedUnits[0];
-    
-    // 如果旧单元有单词，保留测试进度和错题信息
-    // 但使用新版的单词数据
-    return {
-      ...defaultUnit,
-      // 保留旧单元的 ID 以便测试记录能对应上
-      id: oldUnit.id || defaultUnit.id,
-      // 但使用新版的单词列表（已过滤的）
-      words: defaultUnit.words
-    };
-  });
-
+  // 使用新版数据的单元结构（避免旧数据单元过多导致重复）
+  // 只保留测试记录和错题本等用户数据
   return {
-    units: migratedUnits,
+    units: processedUnits,
     testResults: oldData.testResults || [],
     testProgress: oldData.testProgress || [],
-    currentUnitId: oldData.currentUnitId || migratedUnits[0]?.id || '',
+    currentUnitId: processedUnits[0]?.id || '',
     wrongWords: oldData.wrongWords || [],
     lastLearningProgress: oldData.lastLearningProgress,
     articleReadingProgress: oldData.articleReadingProgress
