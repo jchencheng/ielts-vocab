@@ -1,4 +1,4 @@
-import { UserData, Unit, TestResult, TestProgress, LearningProgress, ArticleReadingProgress, ParagraphProgress, WrongWord } from './types';
+import { UserData, Unit, TestResult, TestProgress, LearningProgress, ArticleReadingProgress, Word } from './types';
 import { unit1Article, unit2Article, unit3Article, ArticleSection } from './articleData';
 import { indexedDbService } from './indexedDbService';
 
