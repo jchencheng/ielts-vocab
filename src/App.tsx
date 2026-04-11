@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { getData, saveData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress, importData } from './dataService'
+import { getData, setCurrentUnit, getLearningProgress, saveLearningProgress, getOverallProgress, importData } from './dataService'
 import WordPreview from './components/WordPreview'
 import ArticleReader from './components/ArticleReader'
 import Test from './components/Test'
