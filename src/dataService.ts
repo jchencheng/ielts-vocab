@@ -143,7 +143,7 @@ const migrateData = (oldData: any): UserData => {
   }
 
   // 使用新版数据的单元结构（避免旧数据单元过多导致重复）
-  // 只保留测试记录和错题本等用户数据
+  // 只保留测试记录、错题本、自定义文章等用户数据
   return {
     units: processedUnits,
     testResults: oldData.testResults || [],
@@ -151,7 +151,8 @@ const migrateData = (oldData: any): UserData => {
     currentUnitId: processedUnits[0]?.id || '',
     wrongWords: oldData.wrongWords || [],
     lastLearningProgress: oldData.lastLearningProgress,
-    articleReadingProgress: oldData.articleReadingProgress
+    articleReadingProgress: oldData.articleReadingProgress,
+    customArticles: oldData.customArticles || []
   };
 };
 
